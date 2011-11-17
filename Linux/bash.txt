@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-23T00:56:39.578311
+
+====== bash ======
+Created Thursday 23 September 2010
+
+for i in *.jpg; do convert -rotate 90 """$i""" ./target/"""${i%.jpg}""".jpg; done
+http://forum.ubuntu.org.cn/viewtopic.php%3Ff%3D35%26t%3D42400
+
+
+rename 's/new file/a/' *
+rename 'y/a-z/A-Z/' *
+g为重复匹配

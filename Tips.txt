@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-17T22:31:19.364490
+
+====== Tips ======
+Created Friday 17 December 2010
+

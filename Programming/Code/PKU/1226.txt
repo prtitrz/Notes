@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-12T01:35:10.624462
+
+====== 1226 ======
+Created Sunday 12 September 2010
+
+子串
+Poj 2744
+
+[[./1226.c]] 

@@ -1,0 +1,54 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-16T02:51:54.790060
+
+====== 1 ======
+Created Saturday 16 October 2010
+
+摘自鸟哥的私房菜  第五章、首次登入與man page
+
+[Alt] + [Ctrl] + [Backspace] ：重启x
+[Ctrl] + [Alt] + [F1] ~ [F6]  ：文字介面登入tty1 ~ tty6 终端机；
+[Ctrl] + [Alt] + [F7]   ：图形介面桌面。
+
+date
+cal 12 2012
+bc [[/*scale=3小数点保留3位*/]]
+startx
+passwd
+init
+/*
+run level 0：关机
+run level 3：纯文字模式
+run level 5：含有图形介面模式
+run level 6：重新开机
+*/
+[[/usr/share/doc]]
+[[/usr/share/man]]
+
+[Ctrl]-d相当于EOF或exit
+
+man -f/*指定关键字*/
+man -k/*包含关键字*/
+
+代号	代表内容
+1	使用者在shell环境中可以操作的指令或可执行档
+2	系统核心可呼叫的函数与工具等
+3	一些常用的函数(function)与函式库(library)，大部分为C的函式库(libc)
+4	装置档案的说明，通常在/dev下的档案
+5	设定档或者是某些档案的格式
+6	游戏(games)
+7	惯例与协定等，例如Linux档案系统、网路协定、ASCII code等等的说明
+8	系统管理员可用的管理指令
+9	跟kernel有关的文件
+
+
+shutdown -h now
+shutdown -h 20:25
+系统在今天的20:25 分会关机，若在21:25才下达此指令，则隔天才关机
+shutdown -h +10
+系统再过十分钟后自动关机
+shutdown -r now
+系统立刻重新开机
+shutdown -k now 'This system will reboot' 
+仅发出警告信件的参数！系统并不会关机啦！吓唬人！

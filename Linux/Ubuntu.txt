@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-27T21:25:09.627951
+
+====== Ubuntu ======
+Created Monday 27 September 2010
+
+sudo install amule-dlp-gnome-support amule-dlp-utils
+
+Boolen，
+network.protocol-handler.external.ed2k，true
+String ，
+network.protocol-handler.app.ed2k，/usr/bin/ed2k 
+Boolen， 
+network.protocol-handler.expose.ed2k，false
+
+sudo apt-get install poppler-data
+
+
+python -m SimpleHTTPServer 
+
+http://prtitrzhyk.appspot.com/
+
+
+
+screen:
+screen -t name
+screen -r -p name
+ctrl+a d
+ctrl+a k
+
+
+   1. 首先要找到一个可以 https 的 Google IP ，这个只需要 nslookup www.google.com 查询到一个 IP （比如 A.B.C.D ），然后将 D 段数字随便改一改。测试 https://A.B.C.D 是否能正常访问，正常情况下可能看到证书警告，放行后会显示 Google 主页，而被墙奸过的 IP 则只有『连接被重置』。
+   2. 然后修改 Hosts 将你的 fetchserver 域名指向刚刚找到的 IP ，同时修改本地客户端的 proxy.conf ，将 fetchserver 由 http 改为 https 。
+
+同理，Google 加密搜索不能用，也可以照这个方法改 Hosts ，把 encrypted.google.com 指向某 IP 。
+[[/etc/hosts]]
+sudo chattr -i /etc/hosts

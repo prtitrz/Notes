@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-28T17:59:28.332652
+
+====== initiator reported error (12 - iSCSI driver not found.iSCISI ======
+Created Thursday 28 October 2010
+
+target:
+
+vim [[/etc/ietd.conf]]
+/etc/init.d/iscsi-target start
+
+initiator:
+
+iscsiadm --mode discovery --type sendtargets --portal 192.168.0.77
+chkconfig --list |grep iscsi
+vim [[/etc/iscsi/initiatorname.iscsi]]
+service iscsi start
+
+
+
+lsb_release  -a
+
+iscsi-initiator-utils-6.2.0.868-0.7.el5.x86_64.rpm

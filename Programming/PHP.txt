@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-01-14T23:34:08.104569
+
+====== PHP ======
+Created Friday 14 January 2011
+

@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-16T03:17:28.557453
+
+====== 2 ======
+Created Saturday 16 October 2010
+
+摘自鸟哥的私房菜  第六章、Linux 的檔案權限與目錄配置
+
+chgrp,chown,chmod
+chmod(r4,w2,x1.....777)     chmod u/g/o/a +/-/= r/x/w
+对与文件，w并无删除权限
+对于目录，x即为进入权限，r代表可以ls，但无法cd；w权限可删除文件不可随意赋值
+lsb_release
+-R : 进行递回(recursive)的持续变更，亦即连同次目录下的所有档案都会变更 

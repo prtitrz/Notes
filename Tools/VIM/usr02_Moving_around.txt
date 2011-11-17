@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-11-14T22:45:01.110699
+
+====== Usr02 Moving Around ======
+Created Sunday 14 November 2010
+
+
+%d w/b
+%d e/ge
+
+0 ^ 
+%d $
+
+%d f%c/F
+%d t%c/T(到达%c前一个字符)
+
+%
+
+G gg H M L
+
+zz
+
+[[/?]]
+
+*#
+
+[[/\<the\]]>
+
+``     ma    `a
+<C-o/i>
+[  最后一次修改的起始位置
+]  最后一次修改的结束位置

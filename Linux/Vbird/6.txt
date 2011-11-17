@@ -1,0 +1,32 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-15T00:49:46.504143
+
+====== 6 ======
+Created Wednesday 15 December 2010
+
+vim
+浮云？？
+
+
+[root@www ~]# dos2unix [-kn] file [newfile]
+[root@www ~]# unix2dos [-kn] file [newfile]
+选项​​与参数：
+-k ：保留该档案原本的mtime 时间格式(不更新档案上次内容经过修订的时间)
+-n ：保留原本的旧档，将转换后的内容输出到新档案，如： dos2unix -n old new
+
+
+
+[root@www ~]# iconv --list
+[root@www ~]# iconv -f 原本编码-t 新编码filename [-o newfile]
+选项​​与参数：
+--list ：列出 iconv 支援的语​​系资料
+-f ：from ，亦即来源之意，后接原本的编码格式；
+-t ：to ，亦即后来的新编码要是什么格式；
+-o file：如果要保留原本的档案，那么使用-o 新档名，可以建立新编码档案。
+
+
+[root@www vitest]# iconv -f utf8 -t big5 vi.utf8 | \
+> iconv -f big5 -t gb2312 | iconv -f gb2312 -t utf8 -o vi.gb.utf8
+
+

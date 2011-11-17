@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-04-21T00:48:25.192820
+
+====== VIM ======
+Created Thursday 21 April 2011
+
+    * ci'、ci"、ci(、ci[、ci{、ci< - 分别更改这些配对标点符号中的文本内容
+    * di'、di"、di(、di[、di{、di< - 分别删除这些配对标点符号中的文本内容
+    * yi'、yi"、yi(、yi[、yi{、yi< - 分别复制这些配对标点符号中的文本内容

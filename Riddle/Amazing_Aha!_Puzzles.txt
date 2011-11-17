@@ -1,0 +1,39 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-16T23:26:18.749650
+
+====== Amazing Aha! Puzzles ======
+Created Saturday 16 October 2010
+
+{{./Selection_001.png?type=None}}
+
+{{./Selection_002.png?type=None}}
+
+{{./Selection_003.png?type=None}}
+
+{{./Selection_005.png?type=None}}
+
+{{./Selection_004.png?type=None}}
+
+{{./Selection_006.png?type=None}}
+
+
+
+
+
+E。各方块的对角线组成了数字3、4、5、6、7的字样。
+
+
+A。它们是字母A、B、C、D、E、F、G、H、I的侧视图。
+
+
+">"形。它们是扑克牌四种花色的图案的右半部分。
+
+
+问号处应填的图形是第四个图形竖直方向上的镜像。它们是罗马数字I、II、III、IV、V、VI加上下划线组成的。
+
+
+“1”应该是“A”。这是方块A到方块5重叠起来的样子。
+
+
+在四个空列中水平放置12根木棒，补成2、3、5、8四个数字。

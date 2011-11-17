@@ -1,0 +1,52 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-14T14:50:53.361410
+
+====== sqrt ======
+Created Tuesday 14 December 2010
+
+ Quake III公开源码后，有人在game/code/q_math.c里发现了这样一段代码。它的作用是将一个数开平方并取倒，经测试这段代码比(float)(1.0/sqrt(x))快4倍
+float Q_rsqrt( float number )
+{
+  long i;
+  float x2, y;
+  const float threehalfs = 1.5F;
+
+  x2 = number * 0.5F;
+  y  = number;
+  i  = * ( long * ) &y;  // evil floating point bit level hacking
+  i  = 0x5f3759df - ( i >> 1 ); // what the fuck?
+  y  = * ( float * ) &i;
+  y  = y * ( threehalfs - ( x2 * y * y ) ); // 1st iteration
+  // y  = y * ( threehalfs - ( x2 * y * y ) ); // 2nd iteration, this can be removed
+
+  #ifndef Q3_VM
+  #ifdef __linux__
+    assert( !isnan(y) ); // bk010122 - FPE?
+  #endif
+  #endif
+  return y;
+}
+
+    code/common/cm_trace.c中也出现了这样一段解释sqrt(x)的函数，与上面的代码唯一不同的就是这个函数返回的是number*y：
+/*
+================
+SquareRootFloat
+================
+*/
+float SquareRootFloat(float number) {
+    long i;
+    float x, y;
+    const float f = 1.5F;
+
+    x = number * 0.5F;
+    y  = number;
+    i  = * ( long * ) &y;
+    i  = 0x5f3759df - ( i >> 1 );
+    y  = * ( float * ) &i;
+    y  = y * ( f - ( x * y * y ) );
+    y  = y * ( f - ( x * y * y ) );
+    return number * y;
+}
+
+http://www.matrix67.com/blog/archives/362

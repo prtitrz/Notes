@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-11-19T20:26:16.903999
+
+====== Magic ======
+Created Friday 19 November 2010
+

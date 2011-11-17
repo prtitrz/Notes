@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-12T01:13:46.899225
+
+====== strrev ======
+Created Sunday 12 September 2010
+
+标准库中没有strrev
+
+自制
+void strrev(char *s)
+{
+	int i,j;
+	for(i = 0, j = strlen(s)-1; i < j; i++, j--)
+	{
+		*(s+i) ^= *(s+j);
+		*(s+j) ^= *(s+i);
+		*(s+i) ^= *(s+j);
+	}
+}

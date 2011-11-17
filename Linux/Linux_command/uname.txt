@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-22T00:15:07.122864
+
+====== uname ======
+Created Friday 22 October 2010
+
+    *
+
+      uname -a 打印所有系统信息
+    *
+
+      uname -s 打印内核名称
+    *
+
+      uname -n 打印网络节点主机名
+    *
+
+      uname -r 打印内核发信版本号
+    *
+
+      uname –help 获得帮助信息
+    *
+
+      查看系统版本号的方法还有：
+          o
+
+            cat /proc/version
+          o
+
+            cat /etc/redhat-release
+          o
+
+            cat /etc/issue

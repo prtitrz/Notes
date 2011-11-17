@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-01-03T20:21:30.079834
+
+====== PYQT4 ======
+Created Monday 03 January 2011
+
+sudo apt-get install python3-dev
+http://www.riverbankcomputing.co.uk/software/sip/download
+python3 [[./configure.py]]
+make
+sudo make install
+
+sudo apt-get install qt4-qmake libqt4-dev libxtst-dev
+http://www.riverbankcomputing.co.uk/software/pyqt/download
+python3 [[./configure.py]]
+sudo make
+sudo make install

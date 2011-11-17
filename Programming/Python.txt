@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-13T15:03:11.847184
+
+====== Python ======
+Created Monday 13 December 2010
+

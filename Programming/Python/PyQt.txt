@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-03-23T15:39:09.466678
+
+====== PyQt ======
+Created Wednesday 23 March 2011
+
+http://stackoverflow.com/questions/569650/how-to-keep-track-of-thread-progress-in-python-without-freezing-the-pyqt-gui?tab=active#tab-top
+http://www.diotavelli.net/PyQtWiki/Threading%2C_Signals_and_Slots

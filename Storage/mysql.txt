@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-26T01:50:09.356344
+
+====== mysql ======
+Created Sunday 26 September 2010
+
+root rz
+忘记密码：
+1. 停止 mysqld
+sudo /etc/init.d/mysql stop
+
+2. 启动mysql安全模式，跳过授权表。注意有个&
+/usr/bin/mysqld_safe --skip-grant-tables&
+
+3. 进入mysql
+sudo mysql
+
+4 修改root密码
+>use mysql
+>update user set password=password("new_pass") where user="root";
+
+5 重启mysql
+/etc/init.d/mysql restart
+
+
+删除和更改时加上limit 1
+
+
+show tables;
+describe users;  #tablename=users
+
+清空一个表
+truncate table tablename;
+删除表中数据和表本身
+drop table tablename;
+删除数据库
+drop database databasename;

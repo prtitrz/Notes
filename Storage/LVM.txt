@@ -1,0 +1,43 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-11-06T16:08:52.291412
+
+====== LVM ======
+Created Saturday 06 November 2010
+
+
+pvcreate /dev/hda2 /dev/hda10
+vgcreate test-volume /dev/hda2 /dev/hda10
+vgdisplay -v test-volume
+lvcreate -L 5G -n data test-volume
+ls -l /dev/mapper/test--volume-data 
+ls -l /dev/test-volume/data 
+lvdisplay /dev/test-volume/data
+mkfs.reiserfs /dev/test-volume/data 
+mkdir /data
+mount -t reiserfs /dev/test-volume/data /data/
+df -h /data
+#mount Logical Volume 'data' under [[/data]]     vim /etc/fstab
+***未实践***  /dev/test-volume/data   /data   reiserfs        defaults        0 2
+
+扩展卷
+pvcreate /dev/hda2 /dev/hda3 /dev/hda5
+vgextend test-volume /dev/hda2 /dev/hda3 /dev/hda5
+lvextend -L 8G /dev/test-volume/data （扩展到8G，或+5G增加5G）
+扩展文件系统
+
+
+
+缩减卷
+                
+#unmount LV
+umount /data
+#shrink filesystem to 60G
+resize2fs [[/dev/test/data]] 60G
+#reduce LV
+lvreduce -L 60G [[/dev/test/data]]
+
+删除物理卷
+
+
+reference:http://www.ibm.com/developerworks/cn/linux/l-lvm2/

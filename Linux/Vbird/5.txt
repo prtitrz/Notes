@@ -1,0 +1,103 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-15T00:49:31.495505
+
+====== 5 ======
+Created Wednesday 15 December 2010
+
+[root@www ~]# tar [-j|-z] [cv] [-f 建立的档名] filename... <==打包与压缩
+[root@www ~]# tar [-j|-z] [tv] [-f 建立的档名] <==察看档名
+[root@www ~]# tar [-j|-z] [xv] [-f 建立的档名] [-C 目录] <==解压缩
+选项​​与参数：
+-c ：建立打包档案，可搭配-v 来察看过程中被打包的档名(filename)
+-t ：察看打包档案的内容含有哪些档名，重点在察看『档名』就是了；
+-x ：解打包或解压缩的功能，可以搭配-C (大写) 在特定目录解开
+      特别留意的是， -c, -t, -x 不可同时出现在一串指令列中。
+-j ：透过bzip2 的支援进行压缩/解压缩：此时档名最好为*.tar.bz2
+-z ：透过gzip 的支援进行压缩/解压缩：此时档名最好为*.tar.gz
+-v ：在压缩/解压缩的过程中，将正在处理的档名显示出来！
+-f filename：-f 后面要立刻接要被处理的档名！建议 -f 单独写一个选项啰！
+-C 目录：这个选项用在解压缩，若要在特定目录解压缩，可以使用这个选项。
+
+其他后续练习会使用到的选项介绍：
+-p ：保留备份资料的原本权限与属性，常用于备份(-c)重要的设定档
+-P ：保留绝对路径，亦即允许备份资料中含有根目录存在之意；
+--exclude=FILE：在压缩的过程中，不要将FILE 打包！
+
+
+
+[root@www ~]# dump [-Suvj] [-level] [-f 备份档] 待备份资料
+[root@www ~]# dump -W
+选项​​与参数：
+-S ：仅列出后面的待备份资料需要多少磁碟空间才能够备份完毕；
+-u ：将这次dump 的时间记录到/etc/dumpdates 档案中；
+-v ：将 dump 的档案过程显示出来；
+-j ：加入 bzip2 的支援！将资料进行压缩，预设bzip2 压缩等级为 2
+-level：就是我们谈到的等级，从-0 ~ -9 共十个等级；
+-f ：有点类似 tar 啦！后面接产生的档案，亦可接例如/dev/st0 装置档名等
+-W ：列出在/etc/fstab 里面的具有dump 设定的partition 是否有备份过？
+
+
+[root@www ~]# restore -t [-f dumpfile] [-h] <==用来察看dump 档
+[root@www ~]# restore -C [-f dumpfile] [-D 挂载点] <==比较dump与实际档案
+[root@www ~]# restore -i [-f dumpfile] <==进入互动模式
+[root@www ~]# restore -r [-f dumpfile] <==还原整个档案系统
+选项​​与参数：
+相关的各种模式，各种模式无法混用喔！例如不可以写 -tC 啦！
+-t ：此模式用在察看dump 起来的备份档中含有什么重要资料！类似 tar -t 功能；
+-C ：此模式可以将dump 内的资料拿出来跟实际的档案系统做比较，
+      最终会列出『在dump 档案内有记录的，且目前档案系统不一样』的档案；
+-i ：进入互动模式，可以仅还原部分档案，用在dump 目录时的还原！
+-r ：将整个filesystem 还原的一种模式，用在还原针对档案系统的dump 备份；
+其他较常用到的选项功能：
+-h ：察看完整备份资料中的inode 与档案系统label 等资讯
+-f ：后面就接你要处理的那个dump 档案啰！
+-D ：与-C 进行搭配，可以查出后面接的挂载点与dump 内有不同的档案！
+
+
+
+[root@www ~]# mkisofs [-o 映像档] [-rv] [-m file] 待备份档案.. [-V vol] \
+> -graft-point isodir=systemdir ...
+选项​​与参数：
+-o ：后面接你想要产生的那个映像档档名。
+-r ：透过Rock Ridge 产生支援Unix/Linux 的档案资料，可记录较多的资讯；
+-v ：显示建置 ISO 档案的过程
+-m file ：-m 为排除档案(exclude) 的意思，后面的档案不备份到映像档中
+-V vol ：建立Volume，有点像Windows 在档案总管内看到的CD title 的东西
+-graft-point：graft有转嫁或移植的意思，相关资料在底下文章内说明。
+
+
+
+
+
+cdrecord..................................
+
+
+
+[root@www ~]# dd if="input_file" of="output_file" bs="block_size" \
+> count="number"
+选项​​与参数：
+if ：就是input file 啰～也可以是装置喔！
+of ：就是output file 喔～也可以是装置；
+bs ：规划的一个block 的大小，若未指定则预设是512 bytes(一个sector 的大小)
+count：多少个 bs 的意思。
+
+
+
+
+[root@www ~]# cpio -ovcB > [file|device] <==备份
+[root@www ~]# cpio -ivcdu < [file|device] <==还原
+[root@www ~]# cpio -ivct < [file|device] <==察看
+备份会使用到的选项与参数：
+  -o ：将资料 copy 输出到档案或装置上
+  -B ：让预设的Blocks 可以增加至5120 bytes ，预设是512 bytes ！
+这样的好处是可以让大档案的储存速度加快(请参考i-nodes 的观念)
+还原会使用到的选项与参数：
+  -i ：将资料自档案或装置copy 出来系统当中
+  -d ：自动建立目录！使用cpio 所备份的资料内容不见得会在同一层目录中，因此我们
+       必须要让cpio 在还原时可以建立新目录，此时就得要-d 选项的帮助！
+  -u ：自动的将较新的档案覆盖较旧的档案！
+  -t ：需配合-i 选项，可用在"察看"以cpio 建立的档案或装置的内容
+一些可共用的选项与参数：
+  -v ：让储存的过程中档案名称可以在萤幕上显示
+  -c ：一种较新的portable format 方式储存

@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-07T16:59:09.770508
+
+====== Network ======
+Created Tuesday 07 December 2010
+
+[[/etc/network/interfaces]]
+auto eth0
+auto eth1
+iface eth0 inet static
+address ~~~
+netmask ~~
+gateway ~~
+iface eth1 inet static
+address 192.168.1.254
+netmask 255.255.255.0
+
+
+iptables-save
+
+若是预设的 FORWARD chain 本身为 ACCEPT 的话
+iptables -A POSTROUTING -t nat -s 192.168.1.0/24 -o eth0 -j MASQUERADE
+echo 1 > [[/proc/sys/net/ipv4/ip_forward]]
+
+若是预设的 FORWARD chain 本身为 DROP 的话
+iptables -A POSTROUTING -t nat -s 192.168.1.0/24 -o eth0 -j MASQUERADE
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -s 192.168.1.0/24 -j ACCEPT
+echo 1 > [[/proc/sys/net/ipv4/ip_forward]]
+
+另：iptables -A POSTROUTING -t nat -s 192.168.1.0/24 -j SNAT --to 210.1.1.1 
+1) 使用 -j SNAT 一般会比 -j MASQUERADE 效率来的好，因为这牵涉到封包传送通过相关介面时的相关比对问题
+2) 若是对外本身 ip 不是固定的，也就是拨接取得这类会非固定的环境之下，采用 -j MASQUERADE 会比较方便使用
+
+端口映射
+iptables -A PREROUTING -t nat -p tcp -d 202.114.6.65 --dport 9422 -j DNAT --to-destination 192.168.0.94:22
+
+
+http://linux.chinaunix.net/bbs/thread-812400-1-1.html

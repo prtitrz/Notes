@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-01-06T21:39:04.510337
+
+====== WEB ======
+Created Thursday 06 January 2011
+
+如果你的 web 应用的 UI 可能会在 Linux 下被使用时，请一定记得指定 DejaVu Sans 字体。而每个 UI 设计师的电脑上，也应该安装此字体，免费，自由的 DejaVu 字体。

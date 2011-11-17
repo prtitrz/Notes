@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-12T01:53:05.843208
+
+====== GIT ======
+Created Sunday 12 September 2010
+
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+$ git config --global core.editor vim
+$ git config --global merge.tool vimdiff
+git config --list
+
+先建目录！
+git init
+.git/info/exclude
+git add .
+git commit -m "version"
+git commit --amend
+
+git tag 0.1
+
+git checkout -b develop
+
+git status
+
+gitg
+
+git reset

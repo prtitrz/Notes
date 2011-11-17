@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-11-06T15:54:42.880772
+
+====== fdisk ======
+Created Saturday 06 November 2010
+
+fdisk [[/dev/sdb]]  #以sdb为例
+
+m for help
+n   add a new partition
+t   change a partition's system id
+v   verify the partition table
+w   write table to disk and exit
+d   delete a partition
+p   print the partition table
+q   quit without saving changes
+
+
+
+Command (m for help): n                                                          
+Command action
+   e   extended                                                                  
+   p   primary partition (1-4)                                                   
+p                                                                                
+Partition number (1-4): 1                                                        
+First cylinder (1-38913, default 1): 1                                           
+Last cylinder or +size or +sizeM or +sizeK (1-38913, default 38913): +80G      #total 38913
+                           
+Command (m for help): t
+8e：Linux [[Storage:LVM|LVM]]  83：Linux 	#L可看全部
+
+reference：http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-104-1/

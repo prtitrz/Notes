@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-10-24T19:27:05.904682
+
+====== truncate ======
+Created Sunday 24 October 2010
+
+熟悉数据库的朋友们都知道，大多数数据库都有个truncate指令：truncate table xxx可以把xxx表里的所有数据都删掉，但是保留表结构。其实，在有任何数据库之前，UNIX系统里就有了truncate这个命令了，当然后面的*nix里都保留了这个。可以想像，系统里的truncate命令的操作对象肯定是文件，而且此命令不仅能把文件的数据删成0字节，还可以缩减（甚至扩大）文件至指定的大小（通过 -s 选项指定文件大小值），这对于那种日志头部有些不想删除的关键信息，但后面的部分又很多很杂的情况下很有用。对于普通的日志文件，我们要清理的时候通常可以执行 > log 来清除文件的内容（这样，log文件会变成0字节），但是如果清理的同时想保留原始日志的前面4K的信息，不用truncate就会很麻烦了。
+
+truncate的用法还是通过实战来解释吧，如下：
+
+lily@LLY ~$ echo -n 1234567 > txt
+lily@LLY ~$ cat txt
+1234567lily@LLY ~$ 
+lily@LLY ~$ truncate -s 4 txt
+lily@LLY ~$ cat txt
+1234lily@LLY ~$ 
+lily@LLY ~$ ls -l txt
+-rw-r--r-- 1 lily lily 4 10月 24 16:54 txt
+lily@LLY ~$ truncate -s 1M txt
+lily@LLY ~$ ls -l txt
+-rw-r--r-- 1 lily lily 1048576 10月 24 17:17 txt
+lily@LLY ~$ du txt
+4	txt
+lily@LLY ~$ wc -c txt
+1048576 txt
+
+这里还可以看到一个“奇怪”的现象，本来已经缩至4字节的文件，把它扩展成1M以后，ls 和 wc 的结果显示大小确实是1M，但是 du 的结果却发现大小还是4字节。这也是要注意的地方之一，这种文件称为“空洞文件”，也就是说，文件的部分内容并没有实际存在于硬盘上（即没有分配对应的 inode），只是“声称”有1M的大小而已。对于不存在于硬盘上的那部分字节，如果去读的话，也是不会报错的，会读到全0的数据。
+这也从另一个方面反映出ls等命令默认显示的是文件“声称”的大小，而du （disk use）默认显示的是真正的磁盘占用。

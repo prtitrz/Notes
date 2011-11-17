@@ -1,0 +1,231 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-29T12:16:09.153448
+
+====== Wget ======
+Created Wednesday 29 December 2010
+
+wget用英语定义就是the non-interactive network downloader，翻译过来就是非交互的网络下载器。
+
+1 wget都支持什么协议的下载？
+
+wget支持HTTP、HTTPS和FTP协议的下载，其中也包括通过HTTP代理的下载。看起来支持的协议没有你想想的多，但其实这已足够，我相信你很少使用除这些协议之外的协议来进行下载吧。
+
+2 wget有哪些特色之处？简单介绍一下。
+
+wget能够跟踪HTML文件和XHTML文件，从而使得你可以下载整个站点的文件，然后离线阅读。当然这个功能并不是特别常用，因为几乎所有站点都会包含外链，一旦你用wget进行整站的下载，它也会傻傻的去下载外链站点的内容，这样一来，子子孙孙无穷尽也。
+
+wget是个非常遵守Robot Exclusion Standard（robots.txt）标准的工具。
+
+wget支持慢速网络下载和不稳定网络的下载。当因为网络不稳定而导致下载失败时，wget会重试直到把目标文件下载下来为止。
+
+wget支持断点续传功能，当你下载的很大的文件在中途失败时，这项功能会很有用处。
+
+3 对于使用wget选项，有什么建议？
+
+由于wget是使用getopt函数来处理选项和参数的，因此wget既支持长格式的选项，也支持短格式的选项，他们大部分是一一对应的关系。但是我不建议大家使用短选项。
+
+当某个选项有参数时，你甚至可以在短选项和参数之间不加空格。比如-o log可以写成-olog。但是，你知道的，这也是不建议的。
+
+如果你连续使用了多个短选项，且这些短选项不需要加参数，那么可以将他们组合在一起。比如-d -r -c可以写成-drc。恩，这是被建议的。呵呵
+
+4 wget有什么潜规则不？
+
+当你使用wget时，请务必查看/etc/wgetrc文件和家目录下的.wgetrc文件，先搞清楚里面都设置了什么，再来使用wget命令不迟，否则，你早晚会吃大亏的。不是危言耸听哦。
+
+某些选项还可以接受用逗号隔开的参数。比如-X（大写的x）选项，它是用来设定“不希望下载”的目录列表。你可以用逗号把不希望下载的目录一个一个写上。比如“wget -X wukong , bajie”，这样wget心里就有数了，他知道wukong目录和bajie目录都是不用下载的。其实你也可以在.wgetrc文件中设置“不希望下载”的目录列表，格式是这样的：
+
+exclude_directories=wukong,bajie
+
+于是，你不必在wget命令上设置，就可以实现“不下载”wukong和bajie目录。
+
+当然，如果某天你下载东西时，发现总有几个目录下载不下来，你可要想到，有可能是其他人设置了.wgetrc造成的哦！当然你还要再去/etc/wgetrc文件中再查看一下，那里也是一个可疑的地方。
+
+还有一个小技巧，也可以避免这种误会（别人设置了exclude_directories，而你却不知道），那就是在你使用wget时，这样写：
+
+wget -r -X ” -X wukong,bajie ftp://localhost
+
+使用-X ”的目的就是去除.wgetrc和/etc/wgetrc的作用，然后再用-X wukong,bajie设置，就可以踏踏实实的保证不下载wukong和bajie目录，而其他目录绝不会受影响。
+
+小总结一下：.wgetrc和-X和/etc/wgetrc的设置都是属于平等关系，三者在使用时会进行并集。而在设置了-X ”时，就完全去掉了.wgetrc和/etc/wgetrc对于目录限制的作用。
+
+5 wget不是只能下单个文件么？怎么能下目录呢？
+
+你也太小看wget了。加上-r选项你试试，这就是传说中的“递归下载”。呵呵
+
+6 wget命令的版本是多少？
+
+使用wget -V（注意是大写的v哦）就可以查看了，或者是–version。我的是1.11.4（Red Hat Modified）
+
+7 我怎么能让wget进入后台执行呢？
+
+使用–background！启动的wget会立即进入后台执行。如果没有使用-o选项设置日志文件的话，缺省是记录在当前目录的wget-log 文件中，其实这个日志就是当初输出到屏幕上的那些东东。更重要的一点是，即使你的远程终端连接被ctrl-D或exit了，也不会影响wget的后台执行。
+
+有人会问，我使用wget -r ftp://localhost/a &是不是也可以进入后台阿。你可以试试看，这样写不行的。你会发现即使瞬间看到命令提示符了，但也会瞬间被刷新了的进度条所重新覆盖。而且你使用 ctrl-c还无法终止。只能kill进程来杀掉。所以说，如果你想进入后台执行，还是老老实实的使用–background吧！
+
+8 wget在下载网站时如果遇到robots.txt全禁怎么办？
+
+这时候，你可以使用“–execute 选项加参数”，它和把参数放到.wgetrc里的效果是一样的。你使用–execute robots=off就可以躲开robots.txt的追捕喽！
+
+1 -r选项
+
+这个选项用于下载远程的文件夹，但是情况没有那么简单，对于ftp协议下载来讲，你如果使用如下命令下载
+
+wget -r ftp://my.test.server:/home/wupengchong/img
+
+那么，实际在当前目录下会生成my.test.server/home/wupengchong/img目录结构，可见直接使用-r选项，默认会创建一域名和绝对路径组成的目录结构的。这或许不是我们的初衷，继续向下看。
+
+2 -nd选项
+
+即–no-directories。当我们下载远程的数据时，可以要求wget只下载文件，不下载文件夹，所有下载的文件都平铺在当前目录下。
+
+这时，敏锐的读者会问：“如果下载到不同路径的同名文件的话，那用-nd岂不是会造成同名文件覆盖的问题？”。答案是不会的，因为wget在下载文件时，如果当前目录下有同名文件，则会默认在新下载的文件后加上“.1”、“.2” …等标识，以示区别。
+
+3 -x选项
+
+即–force-directories。这个选项和–no-directories是完全相反的。–no-directories是要求绝 对不能下载和创建任何文件夹，同时所有文件都平铺在当前目录中。而–force-directories选项则要求处处都要有文件夹，即使是wget
+-x http://fly.srk.fer.hr/home/robots.txt%E8%BF%99%E6%A0%B7%E4%B8%8B%E8%BD%BD%E5%8D%95%E7%8B%AC%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E7%9A%84%E5%91%BD%E4%BB%A4%EF%BC%8C%E4%B9%9F%E4%BC%9A%E5%9C%A8%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAfly.srk.fer.hr/home%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%EF%BC%8C%E7%84%B6%E5%90%8E%E5%B0%86robots.txt%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%88%B0fly.srk.fer.hr/home里面。
+
+4 -nH选项
+
+即–no-host-directories。大家已经知道了在使用wget -r命令下载目录时，默认会创建一个my.test.server文件夹的。使用-nH选项就是来禁止这种默认行为。
+
+所以，当你用wget -r -nH ftp://my.test.server:/home/wupengchong/img%E5%91%BD%E4%BB%A4%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%9C%A8%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E4%B8%8B%E5%88%9B%E5%BB%BAhome/wupengchong/img%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%EF%BC%8C%E7%9C%8B%EF%BC%8Cmy.test.server文件夹已经不见了。
+
+5 –protocol-directories选项
+
+它的作用是先创建一个以协议名为名称的文件夹，例如：
+
+wget -r –protocol-directories ftp://my.test.server:/home/wupengchong/img
+
+则会创建如下目录结构ftp/my.test.server/home/wupengchong/img
+
+这个选项，对于那些希望通过协议类型来区分数据的同学比较有用。
+
+6 –cut-dirs=number选项
+
+这个选项比较常用，它表示下载数据时，在本地创建目录时，忽略多少层目录结构。
+
+我们拿ftp://ftp.xemacs.org/pub/xemacs/%E4%B8%BA%E4%BE%8B%EF%BC%8C%E5%A6%82%E6%9E%9C%E5%8F%AA%E4%BD%BF%E7%94%A8-r%E9%80%89%E9%A1%B9%EF%BC%8C%E9%82%A3%E4%B9%88%E6%9C%AC%E5%9C%B0%E4%BC%9A%E5%88%9B%E5%BB%BAftp.xemacs.org /pub/xemacs/目录结构，如果再加上-nH选项，则留下来的目录结构是pub/xemacs/。此处就是–cut-dirs选项起作用的地方 了。我们看一个表格吧：
+
+只用-r选项   -> ftp.xemacs.org/pub/xemacs/
+
+-nH -> pub/xemacs/
+
+-nH –cut-dirs=1 -> xemacs/
+
+-nH –cut-dirs=2  -> .
+
+–cut-dirs=1      -> ftp.xemacs.org/xemacs/
+
+7 -P选项
+
+即–directory-prefix=prefix，所设置的这个prefix路径，则是用来代替当前目录的，所有本应下载到当前目录的数据都会被下载到prefix所设置的目录中去。
+
+使用wget时，会遇到各种突发事件。今天来讲一个。
+
+一个800MB的大文件，在远程用wget下载，到一半时，文件被更名、被删除、被移动了，wget会发现么？ 它会如何抱怨？还是傻傻地顺序读下去，直到读完800MB为止？（你可以随便猜，但真相只有一个…呵呵）
+
+第一步：创建大文件
+
+$ dd if=/dev/zero of=roc-big-file  bs=8192 count=100000
+
+其中if是数据输入源，of是数据输出目标，bs表示每次读写的缓冲区字节数，count是要读取多少次bs。
+
+这条命令就是用来生成一个大小接近800MB的文件，命名为roc-big-file。
+
+第二步：从另一台机器使用wget进行下载，限速在20k吧，要是不限速，刷刷几下就下完了，都来不及测试了该。呵呵
+
+$ wget –limit-rate=20k ftp://yourdomain:/home/wupengchong/test/wgettest/roc-big-file
+
+第三步：这步就是要搞点恶作剧了。我们先更名！
+
+$ mv roc-big-file roc-big-file1
+
+结果没问题，wget继续稳定运行。
+
+第四步：继续恶作剧。我们移动它。
+
+$ mkdir tmpdir
+
+$ mv roc-big-file1 tmpdir/
+
+没问题，稳定运行。
+
+第五步：我们删除它！（拼了，真不信wget能这么鲁棒）
+
+$ cd tmpdir/
+
+$ rm -f roc-big-file1
+
+继续稳定运行…. 只是你看不到这个文件了，从文件所在文件夹的大小也看不到变化了。
+
+结论：
+
+只要不是网络故障、远程文件系统故障或硬件故障，wget的鲁棒性是值得相信的。
+
+其实，真正理解Linux文件系统的同学会知道，这并不是wget的鲁棒性，而是Linux文件系统的鲁棒性保证的。
+
+上篇文章，给了大家不少误会，对于明白原理的朋友，不说自明；但对于不太精通Linux系统原理的朋友，上一篇的表述方法刚刚好。
+
+今天我们继续了解wget的心，看看还有哪些体贴的功能，我们平时没有接触到的。
+
+1 -t选项
+
+即–tries=number，用于设置wget下载时重试的次数，当设置为0（数字零）或inf时表示无限次重试。默认的重试次数是20次。
+
+不过wget也不是在什么情况下都会傻傻的重试的，例如在发生“connection refused”或“not found”时，wget会立即退出，不会进行重试。
+
+2 -o选项
+
+即–output-file=logfile，wget运行过程中输出到标准输出的内容都会被写到所设置的logfile文件中。
+
+3 -O选项
+
+即–output-document-file，表示wget下载的所有文件的内容会被依次追加写到所设置的file文件中，而不会创建原本的文件。在下载单独文件时使用-O选项，可以避免wget下载同名文件时默认写到“.1”后缀文件中的问题。
+
+4 -N选项
+
+即–timestamping，表示开启时间戳机制，wget会下载远程时间戳更新的文件。
+
+5 -nc选项
+
+即–no-clobber选项。
+
+在同一个目录中，如果一个文件被多次下载，那么wget的处理方式会取决于几个重要选项，这其中就包括了-nc选项。
+
+当多次下载同一个文件时，本次文件会被覆盖，或者被重写，或者被保护，这都是有可能的。
+
+当使用wget多次下载同一个文件，且不使用-N，-nc或-r时，那么wget会默认在第二次下载时自动在文件名后加上“.1”后缀，第三次下载时加上“.2”后缀，以此类推。
+
+但当我们使用了-nc选项时，wget不会使用“.1/.2”的策略，而是拒绝下载同一文件（即使文件内容是更新的了）。这个功能用于有的网页被同时指向了很多遍，那么使用-nc可以避免多次下载。
+
+当使用wget且使用-r选项，但不使用-N选项或-nc选项时，重新下载同名文件时，当远程文件的修改时间是更新的了，那么wget会选择覆盖当前目录已有的老文件，此时使用-nc可以禁止wget这样做。（但当远程文件的修改时间并不新，那么wget就会拒绝下载。）
+
+当使用wget且使用-N选项时，是否下载同名文件，完全取决于远程文件和本地文件的时间戳以及文件大小。-nc选项是不允许和-N选项同时设置的。如果你同时使用了-N和-nc选项，会得到这样的错误提示“Can’t timestamp and not clobber old files at the same time.”
+
+6 -c选项
+
+即–continue选项，这就是大名鼎鼎的“断点续传”。无论你之前使用哪个下载工具下载了一半的文件，都可以用wget来继续下载此文件。比如：
+
+wget -c ftp://sunsite.doc.ic.ac.uk/ls-lR.Z
+
+当前目录已有一个ls-lR.Z文件存在，wget将假定这是一个下载了一半的文件，然后提取本地文件的文件大小，并根据此值请求从远程文件的相应文件大小处开始继续下载。
+
+你会发现，其实wget的此断点续传策略是有隐患的，因为如果远程文件的开头部分被进行了修改，wget在进行断点续传时是意识不到这一点的，它只会傻傻的从已传文件大小之后的部分继续下载。所以使用-c选项断点续传之后，务必进行md5校验。
+
+7 –limit-rate=amount选项
+
+此选项适用于限速的，将速度限制在amount bytes/second,  当然也可以用单位k/m来表示，例如–limit-rate=20k将会限制速度在20KB/s。
+
+请注意，wget实现限速的原理是在一次网络读取动作之后sleep一个特定时间段，以让平均的网络读速度降到限制值，这个策略最终会使TCP传输速度降到限制值左右。所以在传输超小文件时，可能无法达到限速的作用。
+
+8 -w选项
+
+即–wait=seconds选项，用于设置wget每两个请求之间间隔的秒数。这个选项很有用处，可以降低远程服务器的负载。你除了可以直接设置秒数，还可以加上m表示分钟、h表示小时、d表示天。
+
+9 –waitretry=seconds选项
+
+用于设置请求重试秒数。wget采用的是线性递增等待的方式，如果你设置的是10秒，那么第一次请求失败后，会等待1秒；第二次请求失败会等待2秒；直到最后达到10秒等待时间为止。所以当到达最后一次时，时间已经过了1+2+…+10=55秒。
+
+over~

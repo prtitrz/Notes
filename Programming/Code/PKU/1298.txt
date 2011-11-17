@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-09-15T13:36:15.427245
+
+====== 1298 ======
+Created Wednesday 15 September 2010
+
+最难的问题
+POJ 2975
+
+[[./1298.c]] 
+
+tip
+最好在end后再输出

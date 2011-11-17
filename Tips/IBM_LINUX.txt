@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2010-12-17T22:31:34.365350
+
+====== IBM LINUX ======
+Created Friday 17 December 2010
+
+使用 Perl 脚本实现交互式命令行程序的管理与测试自动化
+简介： Expect 工具用于实现交互式命令行程序的自动化执行，本文将介绍 CPAN 上与之相关的两个模块 Expect 和 Expect::Simple，结合实例讲解其用法及注意事项。灵活使用这些工具将有助于提高系统管理员和测试人员的工作效率。
+http://www.ibm.com/developerworks/cn/linux/l-cn-perl-expect/index.html?ca=drs-
