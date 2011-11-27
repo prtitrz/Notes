@@ -7,3 +7,121 @@ Created Friday 14 January 2011
 
 http://www.ibm.com/developerworks/cn/linux/l-cn-directio/index.html?ca=drs-
 Linux 中直接 I/O 机制的介绍
+
+监控磁盘读写状况
+
+您有没有碰到过：没有运行任何程序，磁盘却不断执行读写动作，io指示灯常亮，各种操作迟缓甚至卡顿。碰到这种状况往往会感到束手无策，因为并不是 cpu 居高不下，可以立即结束相关进程。而突然结束进程中断磁盘 io 操作甚至可能导致正在写入的数据丢失。
+什么进程在读写磁盘？
+
+可能是 firefox，可能是 updatedb，也可能是正在运行的 pacman -Syu，一切皆有可能 :roll:
+
+怎么查看是什么进程在不断的读写磁盘呢？
+
+请使用 iotop 命令查看：
+1
+2
+3
+4
+	
+# iotop
+ 
+    // 您需要从 Community 安装它后才能使用:
+sudo pacman -S iotop
+
+通过输出结果，我们可以清楚地知晓是什么程序在读写磁盘，速度以及命令行，pid 等信息。
+
+
+    使用 arrow 键移动表头焦点，使列表排序
+
+从截图中可以看到，pacman 在升级系统的时候，io 竟然占到了 99.99%。因为 pacman 的数据库是零散的小文件，所以读取速率不大，但是 io 却很高。通过 iotop，我们可以轻松辨识频繁读写磁盘的程序。
+进一步思考：该程序在读写什么文件？
+
+这个问题其实很简单，通过 lsof 命令我们就可以达到目的：
+1
+	
+# lsof -c APPNAME
+
+同样，如果我们知道了被频繁读取的文件是哪个，也可以反查程序：
+1
+2
+	
+# lsof FILE
+# lsof | grep PATH    // 也可以根据目录进行查询
+
+如果您想知道是系统中哪个用户正在读写的哪个文件，结合 iotop 和 lsof：
+1
+2
+3
+4
+5
+6
+7
+8
+	
+# iotop
+   // 查看用户的进程
+ 
+# lsof -p PID    // 按该用户进程 pid 查看所打开的文件
+# lsof -u USERNAME    // 按用户名查看打开的文件
+ 
+   // 列出某用户的某进程打开的文件
+# lsof -u USERNAME -c APPNAME
+我的磁盘是不是遇到了 io 瓶颈？
+
+如果磁盘 io 经常打到 100%，不仅会造成性能低下，甚至可能会导致死机，硬件损坏。如何查看 io 所占 cpu 时间呢？
+
+请执行这个命令：
+1
+2
+3
+	
+$ top
+ 
+   // 亦可使用 iostat 命令查看，请安装 sysstat 以使用该命令
+
+在 cpu(s) 一行，我们可以看到 wa 项，它就是 io waiting，如果该值过大且持续很久，就证明遇到了 io 瓶颈。需要对软件进行优化，或对硬件进行升级。
+如何进行 io 瓶颈测试？
+
+大文件 io 测试：
+1
+2
+	
+$ time dd if=/dev/zero of=test.file bs=1G count=5
+   // 生成 5g 大小的文件并输出时间，执行速度等信息
+
+批量生成小文件 io 测试：
+
+请首先拷贝下列代码，并命名为 test.sh 文件：
+1
+2
+3
+4
+5
+6
+7
+	
+#!/bin/bash
+ var1=1
+ while test $var1 -le $1
+ do
+ touch $var1
+ var1=`expr  $var1 + 1`
+ done
+
+执行该 shell 脚本前，请先运行 iotop 等程序监控 io 状况。运行脚本：
+1
+	
+$ sh ./test.sh NUM    //    NUM 为生成的文件数
+为什么会产生 io 瓶颈？
+
+原因是多种多样的，可能是坏道，也可能是程序 bug，甚至是电压不稳。。。
+
+曾经碰到 io 100%，读写速率却只有 2m/s 的移动硬盘，经过检测，大概有 80% 以上区域是坏道部分；还有可能是因为 pv 的直线上升，服务器无法承受如此大的荷载而导致 io 增高；或者 gnome 的 tracker 正在制作索引；也许您忘记了后台正在 making 的程序 :mrgreen:
+
+由于原因是多种多样的，在此不能一一列举。读者发现 io 瓶颈后，可以对症下药，先软后硬排除问题，使系统恢复到最佳状态。
+参考资料
+
+lsof 快速起步 [ linuxsir.org ]
+Unix调试的瑞士军刀：lsof [ heikezhi.com ]
+使用 lsof 查找打开的文件 [ ibm.com ]
+https://www.deleak.com/blog/2011/11/11/disk-monitor/

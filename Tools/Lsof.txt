@@ -1,0 +1,227 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-11-28T01:48:20+08:00
+
+====== Lsof ======
+Created Monday 28 November 2011
+
+这是“你应该知道的Unix和Linux命令”系列的第三篇，在这篇文章中，我会介绍lsof这个工具，如果说netcat是进行网络诊断的瑞士军刀，那么lsof就是Unix调试的瑞士军刀。
+
+Lsof是遵从Unix哲学的典范，它只做一件事情，并且做的相当完美——它可以列出某个进程打开的所有文件信息。打开的文件可能是普通的文件，目录，NFS文件，块文件，字符文件，共享库，常规管道，明明管道，符号链接，Socket流，网络Socket，UNIX域Socket，以及其它更多。因为Unix系统中几乎所有东西都是文件，你可以想象lsof该有多有用。
+
+你可以看看这系列文章第一篇对pipe viewer的介绍，如果你对这篇文章感兴趣，那你应该订阅我的RSS Feed(译者注：也别忘了订阅黑客志 :)。
+
+如何使用lsof？
+
+这篇文章中我会尽力列举我能想到的所有lsof的用法，让我们先从最简单的开始（或许你已经知道了），然后逐渐增加复杂度：
+
+列出所有打开的文件
+
+# lsof
+
+不带任何参数运行lsof会列出所有进程打开的所有文件。
+
+找出谁在使用某个文件
+
+# lsof /path/to/file
+
+只需要执行文件的路径，lsof就会列出所有使用这个文件的进程，你也可以列出多个文件，lsof会列出所有使用这些文件的进程。
+
+你也可以一次制定多个文件：
+
+# lsof /path/to/file1 /path/to/file2
+
+递归查找某个目录中所有打开的文件
+
+# lsof +D /usr/lib
+
+加上+D参数，lsof会对指定目录进行递归查找，注意这个参数要比grep版本慢：
+
+# lsof | grep '/usr/lib'
+
+之所以慢是因为+D首先查找所有的文件，然后一次性输出。
+
+列出某个用户打开的所有文件
+
+# lsof -u pkrumins
+
+-u选项限定只列出所有被用户pkrumins打开的文件，你可以通过逗号指定多个用户：
+
+# lsof -u rms,root
+
+这条命令会列出所有rms和root用户打开的文件。
+
+你也可以像下面这样使用多个-u做同样的事情：
+
+# lsof -u rms -u root
+
+查找某个程序打开的所有文件
+
+# lsof -c apache
+
+-c选项限定只列出以apache开头的进程打开的文件：
+
+所以你可以不用像下面这样写：
+
+# lsof | grep foo
+
+而使用下面这个更简短的版本：
+
+# lsof -c foo
+
+事实上，你可以只制定进程名称的开头：
+
+# lsof -c apa
+
+这会列出所有以apa开头的进程打开的文件
+
+你同样可以制定多个-c参数：
+
+# lsof -c apache -c python
+
+这会列出所有由apache和python打开的文件
+
+列出所有由某个用户或某个进程打开的文件
+
+# lsof -u pkrumins -c apache
+
+你也可以组合使用多个选项，这些选项默认进行或关联，也就是说上面的命令会输入由pkrumins用户或是apache进程打开的文件。
+
+列出所有由一个用户与某个进程打开的文件
+
+# lsof -a -u pkrumins -c bash
+
+-a参数可以将多个选项的组合条件由或变为与，上面的命令会显示所有由pkrumins用户以及bash进程打开的文件。
+
+列出除root用户外的所有用户打开的文件
+
+# lsof -u ^root
+
+注意root前面的^符号，它执行取反操作，因此lsof会列出所有root用户之外的用户打开的文件。
+
+列出所有由某个PID对应的进程打开的文件
+
+# lsof -p 1
+
+-p选项让你可以使用进程id来过滤输出。
+
+记住你也可以用都好来分离多个pid。
+
+# lsof -p 450,980,333
+
+列出所有进程打开的文件除了某个pid的
+
+# lsof -p ^1
+
+同前面的用户一样，你也可以对-p选项使用^来进行取反。
+
+列出所有网络连接
+
+# lsof -i
+
+lsof的-i选项可以列出所有打开了网络套接字（TCP和UDP）的进程。
+
+列出所有TCP网络连接
+
+# lsof -i tcp
+
+也可以为-i选项加上参数，比如tcp，tcp选项会强制lsof只列出打开TCP sockets的进程。
+
+列出所有UDP网络连接
+
+# lsof -i udp
+
+同样udp让lsof只列出使用UDP socket的进程。
+
+找到使用某个端口的进程
+
+# lsof -i :25
+
+:25和-i选项组合可以让lsof列出占用TCP或UDP的25端口的进程。
+
+你也可以使用/etc/services中制定的端口名称来代替端口号，比如：
+
+# lsof -i :smtp
+
+找到使用某个udp端口号的进程
+
+# lsof -i udp:53
+
+同样的，也可以找到使用某个tcp端口的进程：
+
+# lsof -i tcp:80
+
+找到某个用户的所有网络连接
+
+# lsof -a -u hacker -i
+
+使用-a将-u和-i选项组合可以让lsof列出某个用户的所有网络行为。
+
+列出所有NFS（网络文件系统）文件
+
+# lsof -N
+
+这个参数很好记，-N就对应NFS。
+
+列出所有UNIX域Socket文件
+
+# lsof -U
+
+这个选项也很好记，-U就对应UNIX。
+
+列出所有对应某个组id的进程
+
+# lsof -g 1234
+
+进程组用来来逻辑上对进程进行分组，这个例子查找所有PGID为1234的进程打开的文件。
+
+列出所有与某个描述符关联的文件
+
+# lsof -d 2
+
+这个命令会列出所有以描述符2打开的文件。
+
+你也可以为描述符指定一个范围：
+
+# lsof -d 0-2
+
+这会列出所有描述符为0，1，2的文件。
+
+-d选项还支持其它很多特殊值，下面的命令列出所有内存映射文件：
+
+# lsof -d mem
+
+txt则列出所有加载在内存中并正在执行的进程：
+
+# lsof -d txt
+
+输出使用某些资源的进程pid
+
+# lsof -t -i
+
+-t选项输出进程的PID，你可以将它和-i选项组合输出使用某个端口的进程的PID，下面的命令将会杀掉所有使用网络的进程：
+
+# kill -9 `lsof -t -i`
+
+循环列出文件
+
+# lsof -r 1
+
+-r选项让lsof可以循环列出文件直到被中断，参数1的意思是每秒钟重复打印一次，这个选项最好同某个范围比较小的查询组合使用，比如用来监测网络活动：
+
+# lsof -r 1 -u john -i -a
+
+如何安装lsof？
+
+许多Unix系统都内置了lsof，如果你的系统没有安装，你可以从这里直接下载源代码。
+
+BSD系统有一个类似的工具可以做同样的事情，叫做fstat。
+
+你可以通过man lsof来了解关于lsof的完整文档，或者通过lsof -h查看。
+
+开始体验lsof的乐趣吧！
+
+------------
+本文翻译自"A Unix Utility You Should Know About: lsof"，作者：Peteris Krumins，照片：Hallvard E
+
+http://heikezhi.com/2011/06/19/swiss-army-knife-of-unix-debugging-lsof/

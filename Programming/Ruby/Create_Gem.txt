@@ -1,0 +1,150 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-11-28T00:56:09+08:00
+
+====== Create Gem ======
+Created Monday 28 November 2011
+
+原文作者：John McAliley，原文地址，翻译：Pilipala
+
+你在Ruby世界看到到处都是Gem。他们几乎是所有的Ruby应用程序的核心。我承认当我试着建立第一个Gem的时候，我有点战战兢兢。但我很快就发现了，这玩意简单得要死。在这个博客系列中，我将涵盖从头开始创建一个Gem的基础，然后转移到更高级的主题，包括Gem生成工具和Rails引擎。首先，对于你们这些Ruby有新手，第一个问题是：什么是Gem？简而言之，它是打包的Ruby代码。在最低限度，Gem包括一个Ruby文件和一个gemspec。gemspec（Gem规范）描述Gem信息，RubyGems包管理器需要这些信息安装Gem。
+
+RubyGems包管理器可以下载，并安装Gem到你的系统，并允许你在其他Ruby程序中使用这些Gem。Ruby 1.9默认安装RubyGems。如果你使用的是Ruby 1.9之前的版本，你可以在这里下载RubyGems。在Ruby 1.9之前版本的应用程序中使用RubyGems，你需要在你的应用程序，加入这一行 ：
+
+require 'rubygems'
+
+Ruby 1.9中不需要这么做，因为RubyGems已经被包含在Ruby 1.9中。
+
+Gem规范(Gem Specification)
+
+正如我在前面提到，Gem的规范描述了Gem。让我们看看一个基本的gemspec文件：
+view plaincopy to clipboardprint?
+
+    Gem::Specification.new do |s|  
+      s.name = %q{my_gem}  
+      s.version = "0.0.1"  
+      s.date = %q{2011-09-29}  
+      s.summary = %q{my_gem is an awesome gem}  
+      s.files = [  
+        "Gemfile",  
+        "Rakefile",  
+        "VERSION",  
+        "lib/my_gem.rb"  
+      ]  
+      s.require_paths = ["lib"]  
+    end  
+
+gemspec是一个相当简单的文件，描述你的Gem的各个方面。在上面的例子gemspec中的文件中，我只列出必需的属性。
+前4个属性是不言自明。“文件”属性中列出包括在Gem中的所有文件。
+“require_paths”属性指定的目录，其中包含Ruby文件应该被这个Gem所加载。gemspec所用到的完整属性列表，请参考这里。
+
+这是一些简单的基础知识，现在让我们切入正题，寻找更有趣的东西。
+
+从头开始创建一个Gem
+
+1、建立Gem的基本文件结构：
+
+输入shell指令,并创建Gem需要的目录：
+
+$ mkdir awesome_gem
+$ cd awesome_gem
+$ mkdir lib
+
+就这样！你需要为你的Gem和一个lib目录来存放你的Ruby文件的根目录。
+
+2、创建的gemspec
+
+我们将使用上一节gemspec文件作为模板。创建一个名为“awesome_gem.gemspec”在你的Gem的根目录中。然后添加一些代码，以成为一个有效的gemspec：
+view plaincopy to clipboardprint?
+
+    Gem::Specification.new do |s|  
+      s.name = %q{awesome_gem}  
+      s.version = "0.0.0"  
+      s.date = %q{2011-09-29}  
+      s.summary = %q{awesome_gem is the best}  
+      s.files = [  
+        "lib/awesome_gem.rb"  
+      ]  
+      s.require_paths = ["lib"]  
+    end  
+
+这个文件包含了一个gemspec标准所需的属性，并且显示我们有一个“lib”目录。在lib目录中的文件“awesome_gem.rb”将被用来保存这个Gem的Ruby代码。
+
+3、添加一些代码
+
+为了简单起见，我们将只用一个Ruby文件在这个Gem里：/lib/awesome_gem.rb，你会看到这种结构类型在大多数你遇到的Gem中。 “lib”内的根文件通常会与Gem的名称相匹配。本例中，“awesome_gem”和“/lib/awesome_gem.rb” 。
+
+继续创建这个文件，添加下面的代码：
+view plaincopy to clipboardprint?
+
+    module AwesomeGem  
+      class WhoIs  
+        def self.awesome?  
+          puts "YOU ARE AWESOME!!"  
+        end  
+      end  
+    end  
+
+这虽然不是什么改变世界的代码，至少， awesome? 方法让你感觉不错。这个Gem将允许你在其他Ruby程序里面使用 WhoIs 的类方法awesome?。
+
+正如我在第一部分中提到，RubyGems的将安装Gem在你的应用程序中，并使用Gem中的类。
+
+4、生成的Gem文件
+
+现在，你有一些很棒的代码，你将要创建一个Gem，所以你可以在另一个Ruby程序用这些代码。RubyGems提供命令，让你创建一个Gem。输入下面命令在Gem的根目录：
+
+$ gem build awesome_gem.gemspec
+
+此命令将建立Gem和输出Gem文件，将包括版本号在文件名中。由于gemspec中版本属性的值是“0.0.0”，Gem的文件将被命名为awesome_gem-0.0.0。
+你应该看到下面的输出和对一些缺少的属性警告：
+
+Successfully built RubyGem
+Name: awesome_gem
+Version: 0.0.0
+File: awesome_gem-0.0.0.gem
+
+你可以忽略这些警告，继续在系统上安装这个Gem。请注意，Gem文件被创建在当前目录中。
+
+5、安装Gem
+
+现在，你有一个Gem文件，你可以使用RubyGems安装这个Gem到你的计算机上。通常情况下，你安装的Gem来源于外部，但不限于此。如果你有机会得到Gem文件，你可以通过指定Gem文件的位置将其安装在本地。下面的命令在本地安装awesome_gem.gem：
+
+gem install awesome_gem.gemspec
+
+你应该得到以下输出：
+
+Successfully installed awesome_gem-0.0.0
+1 gem installed
+Installing ri documentation for awesome_gem-0.0.0...
+Installing RDoc documentation for awesome_gem-0.0.0...
+
+耶！你刚创建了Gem！这个Gem现在已经安装在你的系统，并准备在另一个Ruby程序中使用。
+
+6、Gem的另一个Ruby程序
+
+创建一个新的Ruby文件将用来测试我们的Gem。让我们叫它“be_awesome.rb”。你可以在你的系统中的任何位置创建此文件，然后添加下面的代码，所以我们可以使用Gem中的“awesom?”类方法。用 require “awesome_gem”，RubyGems将能够找到Gem，把这个类提供给你的程序。然后你只需要调用它。以下是代码：
+view plaincopy to clipboardprint?
+
+    require 'awesome_gem'  
+    AwesomeGem::WhoIs.awesome?  
+
+现在你可以运行Ruby程序和测试你新创建的Gem，看看你是如何awesome的。通过命令行输入：
+
+ruby be_awesome.rb
+
+你应该看到在你的shell下面的输出：
+
+YOUR ARE AWESOME!
+
+恭喜你，你只要在程序中使用你的新的Gem！虽然它还不值得放在GitHub上，跟朋友吹嘘，但是， 你还是学会了如何从头开始创建一个Gem，并在另一个程序中使用它。现在，你可以继续前进，追求更大的进步。
+
+结论
+
+虽然本教程是相当简单，只涉及创建一个基本的Gem，我认为它对新的Gem开发者仍然很重要。
+
+基础知识给你一个进入高级的主题良好基础。平时，我用Jeweler去创造Gem，这的确是一个功能强大的工具， 但我觉得手工从头创建一个Gem之前就用这样的生成工具，可能是有害的。
+
+你需要了解如何构建一个Gem的最简单的形式，才可以理解像Jeweler这样的生成工具的背后是什么。虽然我建议在你第一次学习Gem开发时，手工从头创建一个Gem。但是，当你理解了基础知识，就没什么理由拒绝使用生成器了。
+
+生成器可以节省很多时间，因为他们给你一个很好的起始架构。本系列的下一个博客后，将有关Gem的开发，以及更高级的主题，诸如：如何使用生成工具来开始你的Gem开发。以后的文章将解释如何开发Ruby on Rails的Gem。
+http://heikezhi.com/2011/11/15/%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAgem/

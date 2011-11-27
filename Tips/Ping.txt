@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-11-28T01:29:38+08:00
+
+====== Ping ======
+Created Monday 28 November 2011
+
+在运行 ping 命令的时候，里面有一项输出叫 mdev，如下所示：
+
+~% ping www.google.pt
+PING www.l.google.com (72.14.203.103) 56(84) bytes of data.
+64 bytes from tx-in-f103.1e100.net (72.14.203.103): icmp_req=1 ttl=50 time=84.1 ms
+64 bytes from tx-in-f103.1e100.net (72.14.203.103): icmp_req=2 ttl=50 time=83.0 ms
+64 bytes from tx-in-f103.1e100.net (72.14.203.103): icmp_req=3 ttl=50 time=85.5 ms
+^C
+--- www.l.google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+rtt min/avg/max/mdev = 83.019/84.227/85.506/1.016 ms
+
+它是什么意思呢？ ping 的手册中并没有提到。我们不妨看一下 ping 的源代码，见 ping_common.c：
+
+tsum += triptime;
+tsum2 += (long long)triptime * (long long)triptime
+
+以及
+
+tsum /= nreceived + nrepeats;
+tsum2 /= nreceived + nrepeats;
+tmdev = llsqrt(tsum2 - tsum * tsum);
+
+所以我们可以得出：
+
+mdev = SQRT(SUM(RTT*RTT) / N - (SUM(RTT)/N)^2)
+
+也就是这个平均偏差的公式：
+
+所以 mdev 就是 Mean Deviation 的缩写，它表示这些 ICMP 包的 RTT 偏离平均值的程度，这个值越大说明你的网速越不稳定。
+http://wangcong.org/blog/archives/1801
+
+fping -r2 192.168.1.100|awk '{print $3}'

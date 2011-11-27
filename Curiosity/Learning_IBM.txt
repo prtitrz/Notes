@@ -1,0 +1,48 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-02-26T22:15:55.009110
+
+====== Learning IBM ======
+Created Saturday 26 February 2011
+
+学习 Linux, 101: 运行级别、关机和重新启动
+http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-101-3/index.html?ca=drs-
+Linux 中的零拷贝技术
+http://www.ibm.com/developerworks/cn/linux/l-cn-zerocopy1/index.html
+http://www.ibm.com/developerworks/cn/linux/l-cn-zerocopy2/index.html?ca=drs-
+编写 Linux 桌面脚本，第 1 部分: 基础
+使用 Python 和 screenlet 构建有用的桌面应用程序
+http://www.ibm.com/developerworks/cn/linux/l-script-linux-desktop-1/index.html?ca=drs-
+Linux 下几个文件操作命令的代码实现
+用 C 语言实现命令 cp、df、mkdir、rm、tac
+http://www.ibm.com/developerworks/cn/linux/l-cn-commands/index.html?ca=drs-
+利用 Nmap 实现快速的网络发现与管理
+http://www.ibm.com/developerworks/cn/opensource/os-cn-nmap/index.html?ca=drs-
+适合系统管理新手的 bash 脚本编程 动手实践方法
+http://www.ibm.com/developerworks/cn/aix/library/au-getstartedbash/index.html?ca=drs-
+Linux 2.6 中的页面回收与反向映射
+http://www.ibm.com/developerworks/cn/linux/l-cn-pagerecycle/index.html?ca=drs-
+使用 Socket 通信实现 FTP 客户端程序
+http://www.ibm.com/developerworks/cn/linux/l-cn-socketftp/index.html?ca=drs-
+学习 Linux，302（混合环境）: 配置 Samba
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-312-1/index.html?ca=drs-
+详解 AIX 平台上文件传输方式
+http://www.ibm.com/developerworks/cn/aix/library/1106_liuge_aixtransfer/index.html?ca=drs-
+在云中创建 PHP 开发环境 
+http://www.ibm.com/developerworks/cn/cloud/library/cl-createphponcloud/index.html?ca=drs-
+使用 Perl 脚本实现交互式命令行程序的管理与测试自动化
+简介： Expect 工具用于实现交互式命令行程序的自动化执行，本文将介绍 CPAN 上与之相关的两个模块 Expect 和 Expect::Simple，结合实例讲解其用法及注意事项。灵活使用这些工具将有助于提高系统管理员和测试人员的工作效率。
+http://www.ibm.com/developerworks/cn/linux/l-cn-perl-expect/index.html?ca=drs-
+学习 Linux，302（混合环境）: SWAT 配置
+通过一个基于 Web 的界面管理 Samba
+简介： Samba Web Administration Tool (SWAT) 是一个用于 Samba 的基于 Web 的管理工具，支持从任何具有 Web 浏览器的计算机进行 GUI 配置。SWAT 本身就是一个服务器，与所有服务器一样，它要求至少满足最低配置。在本文中，将学习如何安装和配置 SWAT 本身，以及如何使用 SWAT 管理 Samba。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-312-5/index.html?ca=drs-
+解析 Linux 内核可装载模块的版本检查机制
+简介： 为保持 Linux 内核的稳定与可持续发展，内核在发展过程中引进了可装载模块这一特性。内核可装载模块就是可在内核运行时加载到内核的一组代码。通常 , 我们会在两个版本不同的内核上装载同一模块失败，即使是在两个相邻的补丁级（Patch Level）版本上。这是因为内核在引入可装载模块的同时，对模块采取了版本信息校验。这是一个与模块代码无关，却与内核相连的机制。该校验机制保证了内核装载的模块是用户认可的，且安全的。本文将从内核模块发布者的角度思考模块版本检查机制，并从开发者与授权 root 用户的角度去使用及理解该机制。
+http://www.ibm.com/developerworks/cn/linux/l-cn-kernelmodules/index.html?ca=drs-
+学习 Linux，101: 引导系统
+简介： 了解如何在引导过程中引导您的 Linux 系统。您可以使用本文中的材料准备 Linux 系统管理员认证 LPI 101 考试，或者只是了解一下该引导进程。
+http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-101-2/index.html?ca=drs-
+使用 dd 命令实现 SAN 存储的快照数据迁移
+简介： 在实验室环境，如何对现有数据做一个快照备份，如何快速将数据迁移到新的存储系统？ dd 命令可以实现数据的快照备份和数据迁移。在本文中，我们将分析 dd 命令的用法，以实现使用不同多路方式的 SANboot OS 的快照备份和数据迁移为例，演示 dd 命令如何实现数据的快照备份和数据迁移。
+http://www.ibm.com/developerworks/cn/linux/l-cn-ddsan/index.html?ca=drs-

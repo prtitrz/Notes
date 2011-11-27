@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-11-28T01:36:59+08:00
+
+====== Hacker News ======
+Created Monday 28 November 2011
+
+一个最小x86 ELF Hello World程序的诞生
+http://heikezhi.com/2011/10/19/smallest-x86-elf-hello-world/

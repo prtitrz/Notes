@@ -1,0 +1,117 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2011-11-28T00:50:35+08:00
+
+====== Udisk ======
+Created Monday 28 November 2011
+
+现如今 u盘 假货频出，扩容盘、坏块盘、牛屎片屡见不鲜，我们怎样才能辨识出假的 u盘，从而保护自身利益呢？
+
+在 windows 下，有很多 u盘 的测试工具（如 MyDiskTest），但是 linux 平台却没有类似的集大成者，不过我们可以通过万能的命令行解决这一问题并做的更好。
+使用 假u盘 的危害
+
+如果您使用的是 假u盘，极有可能遇到：数据损坏、读写超慢、断电数据丢失 、携带病毒（伊朗的离心机就是这么悲剧的 :roll: ）、u盘短路导致电脑故障 等等问题。电脑硬件损坏其实没什么，可是金不换的数据将永远和您 say good-bye 了。
+
+为了数据的安全，强烈推荐使用正品优盘。不要到街边小摊购买，也不要买各种假冒伪劣产品。
+扩容否？坏块否？
+
+其实根据常识可以判断，那些 超大容量超低价格 的优盘，绝对都是假货：
+
+    按照现在的产能 40g 的 ssd 尚且千元以上，64g sd 卡也在2.5k 左右（2011-11 数据）。容量是他们几倍的优盘，怎么可能才三百元不到呢？
+
+还有一些就是以次充好的优盘，例如使用 32M 的扩容充当 1G 销售（真的很常见）；或者使用劣质芯片（没有标识的芯片或者打磨过的芯片统称 牛屎片），出现坏块状况导致数据受损。
+
+鉴于这些问题，使用前篇介绍的 badblocks 命令 就可以检测优盘是否扩容，是否有坏块：
+1
+	
+sudo badblocks -s -v /dev/sdb
+
+如果 100% 通过测试，则证明没有坏块；如果检测的块数目计算结果和优盘容量相等，则证明不是扩容盘。
+
+delectate@delectate ~$ sudo badblocks -s -v /dev/sdc
+Password:
+Checking blocks 0 to 3915775
+Checking for bad blocks (read-only test): done
+Pass completed, 0 bad blocks found.
+delectate@delectate ~$
+// 容量是 4g 无误，且 0 bad blocks found，所以可以确认是 非扩容无坏块 优盘一枚。
+
+速度测试
+
+使用 redhat 开发的 disk utility 工具即可对优盘读写性能进行测试。
+1
+	
+$ palimpsest
+
+在左边列表中选种您的优盘设备，然后点击主界面的 benchmark 按钮，再在新窗口中选择 读取速度测试 或者 读写速度测试：
+
+或者您可以使用 dd 命令进行 写入速度测试：
+1
+2
+	
+$ dd if=/dev/zero of=test.img bs=500M count=1
+   // 也可以缀上 time 命令
+
+同样使用 dd 命令也可以测试 读取速度：
+1
+	
+$ dd if=test.img of=~/test.img
+
+执行结果如下：
+
+delectate@delectate /media/C871-DFF8$ dd if=/dev/zero of=test.img bs=500M count=1
+1+0 records in
+1+0 records out
+524288000 bytes (524 MB) copied, 90.9011 s, 5.8 MB/s
+
+[0]delectate@delectate /media/C871-DFF8$ cd ~
+[0]delectate@delectate ~$ time dd if=/media/C871-DFF8/test.img of=test.img
+1024000+0 records in
+1024000+0 records out
+524288000 bytes (524 MB) copied, 18.258 s, 28.7 MB/s
+
+real 0m18.353s
+user 0m0.387s
+sys 0m6.486s
+delectate@delectate ~$
+
+一般来说，读取在 30m 左右，写入在 10m 左右是正常值（usb2.0）。usb3.0设备 插在 usb2.0插口 上，或者 usb2.0设备 插在 usb3.0插口上，速度均有一定的提升；当然 3.0 插 3.0 速度最快啦。
+
+如果您的优盘速度较慢，且极低于正常值（如只有 几百k 或者 几兆），可以断定为假货。
+芯片辨识
+
+优盘的主控芯片和存储芯片至关重要，晶振、电感亦马虎不得。
+
+通过命令行查询：
+1
+	
+$ lsusb
+
+即可得知 Vendor ID 和 Product ID：
+
+delectate@delectate ~$ lsusb
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+...
+Bus 008 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 002: ID 0bda:0158 Realtek Semiconductor Corp. USB 2.0 multicard reader
+Bus 001 Device 003: ID 5986:0370 Acer, Inc
+Bus 005 Device 002: ID 04fc:05d8 Sunplus Technology Co., Ltd Wireless keyboard/mouse
+Bus 002 Device 005: ID 0000:0000
+delectate@delectate ~$
+
+VID 一般是生产厂商id，也就是主控芯片；PID 是产品 id。VID 和 PID 均可被修改。
+
+使用 disk utility 则可以获知产品序列号：
+
+通过产品序列号、VID，PID，可以找出主控芯片的相关信息。（这方面还是用 chipGenius 比较方便）。
+遇到问题优盘怎么办？
+
+一般情况下，问题优盘很常见，可以分情况处理：
+
+    速度快，无坏块，无扩容，名厂芯片：正常使用；
+    速度慢，无坏块，无扩容，名厂芯片：忍受速度慢的煎熬吧……请注意及时备份数据；
+    速度慢，有坏块，无扩容，名厂芯片：屏蔽坏块区域（把有坏块的部分单独分区，请使用量产工具操作）；
+    速度慢，有坏块，已扩容，名厂芯片：更换存储芯片，然后重新量产；
+    速度慢，有坏块，已扩容，牛屎芯片：扔掉！
+    如果单独出现上述任何问题中的一项或者多项，请一定要及时备份数据！
+https://www.deleak.com/blog/2011/11/17/u-disk-test/
