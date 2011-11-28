@@ -46,3 +46,7 @@ http://www.ibm.com/developerworks/cn/linux/l-lpic1-v3-101-2/index.html?ca=drs-
 使用 dd 命令实现 SAN 存储的快照数据迁移
 简介： 在实验室环境，如何对现有数据做一个快照备份，如何快速将数据迁移到新的存储系统？ dd 命令可以实现数据的快照备份和数据迁移。在本文中，我们将分析 dd 命令的用法，以实现使用不同多路方式的 SANboot OS 的快照备份和数据迁移为例，演示 dd 命令如何实现数据的快照备份和数据迁移。
 http://www.ibm.com/developerworks/cn/linux/l-cn-ddsan/index.html?ca=drs-
+技巧：Linux 动态库与静态库制作及使用详解
+标准库的三种连接方式及静态库制作与使用方法
+简介： Linux 应用开发通常要考虑三个问题，即：1）在 Linux 应用程序开发过程中遇到过标准库链接在不同 Linux 版本下不兼容的问题； 2）在 Linux 静态库的制作过程中发现有别于 Windows 下静态库的制作方法；3）在 Linux 应用程序链接第三方库或者其他静态库的时候发现链接顺序的烦人问题。本文就这三个问题针对 Linux 下标准库链接和如何巧妙构建 achrive(*.a) 展开相关介绍。
+http://www.ibm.com/developerworks/cn/linux/l-cn-linklib/index.html?ca=drs-

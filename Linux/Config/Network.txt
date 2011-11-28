@@ -36,5 +36,14 @@ echo 1 > [[/proc/sys/net/ipv4/ip_forward]]
 端口映射
 iptables -A PREROUTING -t nat -p tcp -d 202.114.6.65 --dport 9422 -j DNAT --to-destination 192.168.0.94:22
 
+bt port
+nat:
+-A PREROUTING -p tcp -m tcp --dport 51413 -j DNAT --to-destination 192.168.83.224
+filter:
+-A FORWARD -s 192.168.83.224/32 -p tcp -m tcp --dport 51413 -j ACCEPT
+
+iptables-save > /etc/iptables.rule
+iptables-restore < /etc/iptables.rule
 
 http://linux.chinaunix.net/bbs/thread-812400-1-1.html
+http://www.cyberciti.biz/tips/linux-iptables-open-bittorrent-tcp-ports-6881-to-6889.html
