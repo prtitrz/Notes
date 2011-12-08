@@ -239,3 +239,296 @@ google 在实现和使用 GPB 的时候，默认采用了一种为每个协议�
 
 既然在 GPB 上花了这么多功夫，当然，采用 GPB 就是最后的决定了。
 http://blog.codingnow.com/2011/11/dev_note_3.html
+
+
+话接 开发笔记1 。我们将为每个玩家的接入提供一个 agent 服务。agent 相应玩家发送过来的数据包，然后给于反馈。
+
+对于 agent 服务，是一个典型的包驱动模式。无论我们用 Erlang 框架，还是用 ZeroMQ 自己搭建的框架，agent 都会不会有太多的不同。它将利用一个单一的输入点获取输入，根据这些输入产生输出。这个输入点是由框架提供的。框架把 Agent 感兴趣的包发给它。
+
+我们会有许多 agent ，在没有它感兴趣的包到来时，agent 处于挂起状态（而不是轮询输入点）。这样做可以大量节省 cpu 资源。怎样做的高效，就是框架的责任了，暂时我们不展开讨论框架的设计。
+
+下面来看，一旦数据包进入 agent 应该怎样处理。
+
+游戏服务逻辑复杂度很高，比起很多 web 应用来说，要复杂的多。我们不能简单的把外界来的请求都看成的独立的。把输入包设计成 REST 风格，并依赖数据服务构建这套系统基本上行不通。几乎每个包都有相关的上下文环境，就是说，输入和输入之间是有联系的。简单的把输入看成一组组 session 往往也做不到 session 间独立。最终，我把游戏服务器逻辑归纳以下的需求：
+
+游戏逻辑由若干流程构成。比如，agent 可以看作是登陆流程和场景漫游服务流程。
+
+每个流程中，服务器可以接收若干类型的包，每种类型的包大多可以立刻处理完毕。可以简单的认为提供了一个请求回应模式的处理机。
+
+在处理部分数据包时，可以开启一个子流程，在子流程处理完毕前，不会收到父流程认可的数据包类型。（如果收到，即为非法逻辑）
+
+在处理部分数据包时，也可以开启一个并行流程，这个流程和已有的流程处理逻辑共存。即，框架应根据包类型把数据包分发到不同的并行流程上。例如，在场景中漫游时，可能触发一个玩家交易的并发流程。（玩家交易行为需要多次交互确认的手续，不能一次性的完成。在交易过程中，其它如战斗、聊天的处理不可中断）
+
+每个流程都可能因为某次处理后中断退出。继而进入后续的代码逻辑。这个中断退出行为，对于并发和非并发流程都有效。
+
+RPC 可以看作一个简单的并发流程，即等待唯一返回包，并继续流程逻辑。
+
+我希望能设计一个简单的 DSL 来描述我要的东西，大约像这个样子：
+
+...1
+listen :
+    case message A :
+        ...2
+        listen :
+            case message B:
+                ...3
+                break
+            case message C:
+                ...4
+            case message D:
+                ...5
+        ...6
+    case message E:
+        ...7
+        break
+...8
+listen :
+    case message F:
+        fork listen :
+            case message G:
+                ...9
+            case message H:
+                ...10
+                break
+        ...11
+    case message I:
+        ...12
+
+解释一下上面这张表：
+
+它表示，服务器启动后，会运行 ...1 这些代码，然后开始等待输入 A 或 E 两种消息 。如果收到 E 类消息，就执行 ...7 段代码，再因 break 跳出到 ...8 的位置。
+
+如果收到 A 类消息，执行 ...2 代码，然后进程改为等待 B,C,D 类消息。此时，A,E 类消息都无效。直到收到 B 类消息后，执行流程到 ...6 并结束 A 消息的处理。再次等待输入 A 或 E 。
+
+...8 后的阶段大致相同，但在 F 类消息的处理中，使用了并行的输入(fork listen) 。此时，系统会同时等待 G/H 和 F/I 的输入。只到有 H 类消息输入，中断 F 的处理流程，执行完 ...11 后，系统去掉 G/H 的输入等待。
+
+要实现这么一套 DSL ，首先需要用已有的动态语言先实现一下所有功能，等需求稳定后，再设计 DSL 的语法。支持 coroutine 的 lua 非常适合做这件事情。
+
+这套东西的框架其实是一个 coroutine 的调度器。每个执行流（就是 case message），不论是不是并行的，都是一个 coroutine 。当遇到 listen ，fork ，break 的时候 coroutine yield 出来，由调度器来决定下一步该 resume 哪个分支就好了。
+
+框架只需要接收外界传入的带类型信息的 message ，在调度器里维护一张消息类型到执行流的映射表，就可以正确的调度这些东西。
+
+剩下的事情就是处理穿插在其中的代码块内，数据相互之间可见性的问题；以及给 RPC 提供一个更易用的接口了。
+
+我大约花了不到 100 行 lua 代码来实现以上提到的功能的雏形，贴在下面，尚需完善：
+
+--- agent.lua
+local setmetatable = setmetatable
+local coroutine = coroutine
+local assert = assert
+local unpack = unpack
+local print = print
+local pairs = pairs
+
+module "agent"
+
+local function create_event_group(self, events, thread , parent_group)
+    local group = {
+        event = {},
+        thread = thread,
+        parent = parent_group,
+    }
+    if parent_group then
+        for k,v in pairs(parent_group.event) do
+            self.event[k] = nil
+        end
+    end
+
+    for k,v in pairs(events) do
+        group.event[k] = { func = v , group = group }
+        assert(self.event[k] == nil , k)
+        self.event[k] = group.event[k]
+    end
+end
+
+local function pop_event_group(self, group)
+    for k in pairs(group.event) do
+        self.event[k] = nil
+    end
+    if group.parent then
+        for k,v in pairs(group.parent.event) do
+            assert(self.event[k] == nil , k)
+            self.event[k] = v
+        end
+    end
+end
+
+function create(main)
+    local mainthread = coroutine.create(main)
+    local self = setmetatable( { event = {} } , { __index = _M })
+    local r , command , events = coroutine.resume(mainthread , self)
+    assert(r , command)
+    assert(command == "listen" ,  command)
+    create_event_group(self, events, mainthread)
+    return self
+end
+
+function send(self, msg , ...)
+    local event = self.event[msg]
+    if event == nil then
+        print (msg .. " unknown" , ...)
+    else
+        local event_thread = coroutine.create(event.func)
+        local group = event.group
+        while true do
+            local r, command, events = coroutine.resume(event_thread, self, ...)
+            assert(r,command)
+            if command == "listen" then
+                create_event_group(self, events, event_thread , group)
+                break
+            elseif command == "fork" then
+                create_event_group(self, events, event_thread)
+                break
+            elseif command == "break" then
+                pop_event_group(self, group)
+                event_thread = group.thread
+                group = group.parent
+            else
+                break
+            end
+        end
+    end
+end
+
+
+function listen(agent , msg)
+    coroutine.yield("listen",msg)
+end
+
+function quit(agent)
+    coroutine.yield "break"
+end
+
+function fork(agent, msg)
+    coroutine.yield("fork",msg)
+end
+
+--- test.lua
+
+local agent = require "agent"
+
+a = agent.create(function (self)
+    self:listen {
+        login = function (self)
+            self:listen {
+                username = function(self , ...)
+                    print("username", ...)
+                    self:listen {
+                        password = function(self, ...)
+                            print("password", ...)
+                            self:quit()
+                        end
+                    }
+                    self:quit()
+                end ,
+            }
+        end,
+        ok = function (self)
+            self:quit()
+        end,
+    }
+    print "login ok"
+    local q = 0
+    self:listen {
+        chat = function (self, ...)
+            print("chat", ...)
+        end,
+        question = function (self , ...)
+            print("question", ...)
+            local answer = "answer" .. q
+            q = q+1
+            self:fork {
+                [answer] = function (self, ...)
+                    print("answer", ...)
+                    self:quit()
+                end
+            }
+        end,
+    }
+end)
+
+a:send("login")
+a:send("username","alice")
+a:send("username","bob")
+a:send("password","xxx")
+a:send("login")
+a:send("username","bob")
+a:send("password","yyy")
+a:send("chat","foobar")
+a:send("ok")
+
+a:send("chat", "hello")
+a:send("question","?0")
+a:send("chat", "world")
+a:send("question","?1")
+a:send("answer0","!0")
+a:send("answer1","!1")
+
+
+12 月 5 日补充:
+
+周一上班和蜗牛同学讨论了一下需求， 最后我们商定抽象出一个 session 出来， 供 fork 出来的流程使用。因为并行的流程会使用相同的消息类型，但流程上是独立的。
+
+根据 session id 和 message type 做两级分发要清晰一些。
+
+然后，我们再对 rpc 调用做简单的封装，使用更简单。
+
+改进后的代码就不再列出了。
+http://blog.codingnow.com/2011/12/dev_note_4.html
+
+这周我开始做场景模块。因为所有 PC 在 server 端采用独立的 agent 的方式工作。他们分离开，就需要有一个模块来沟通他们。在一期目标中，就是一个简单的场景服务。用来同步每个 agent 看到的世界。
+
+这部分问题，前不久思考过 。需求归纳如下：
+
+    每个 agent 可以了解场景中发生的变化。
+    当 agent 进入场景时，需要获取整个世界的状态。
+    agent 进入场景时，需要可以查询到它离开时自己的状态。关于角色在场景中的位置信息由场景服务维护这一点，在 开发笔记1 中提到过。
+
+大批量的数据同步对性能需求比较高。因为在 N 个角色场景中，同步量是 N*N 的。虽说，先设计接口，实现的优化在第二步。但是接口设计又决定了实现可以怎样优化，所以需要比较谨慎。
+
+比如，同步接口和异步接口就是不同的。
+
+请求回应模式最直观的方式就是设计成异步接口，柔韧性更好。适合分离，但性能不易优化。流程上也比较难使用。（使用问题可以通过 coroutine 技术来改善 ）即使强制各个进程（不一定是 os 意义上的进程）在同一个 CPU 上跑，绕开网络层，也很难避免过多的数据复制。虽有一些 zero-copy 的优化方案，但很难跨越语言边界。
+
+同步接口使用简单，但在未经优化前，可能不仅仅是性能较差的问题，而是完全不可用。一旦无法优化，接口修改对系统的变动打击是很大的。（异步接口在使用时因为充分考虑了延迟的存在，及时没有优化，也不至于影响整个系统的运转）
+
+在这次的具体问题上，我判断使用同步接口是性能可以接受的。即，用户可以直接查询场景的各种状态。蜗牛同学希望实现上更简单，干脆就是把所有 agent 以及未来的 npc 服务实现在一起，大家共享场景状态。因为框架使用 coroutine 调度，其实是相互没有冲突的。
+
+在一个场景物理上在一个 CPU 上跑这个问题上，我没有不同意见。但是，我希望在设计上依旧独立。agent 的并发在实现上是不存在的，但在设计上是考虑进去的。agent 之间物理上完全独立，但在交互上使用一些优化手段达到零成本。
+
+模块在物理上分离，是高健壮性和柔韧性的充分条件。最小依赖单一模块实现的质量。
+
+至于性能开销，我的观点是，把所有东西塞到一起，使得沟通成本下降；比如大家都跑在同一 lua state 中，没有跨语言边界的信息传递；其实是一种成本延迟支付。抛开可能引起的健壮性下降问题，动态语言的 GC 代价也是初期无法预期的。
+
+不过无论采用何种实现方案，接口设计总比其它更重要。需要留意的是，先分开实现再合起来，比先合在一起以后再分离，在实践操作中要难得多。这在历史上许多系统的大模块设计中被反复证明过：我看过太多上万行的 C++ 代码，几十个类绞在一起，留下飞线和后门，让类与类之间做必要的沟通。静态语言尚且如此，毋提动态语言这种随意性更高的东西了。
+
+这周，怪物公司和小V 还在忙 client 那边跟美术的沟通和工具插件开发，原定的 C/S 联调一再被推迟。我自己在写了两三百行场景服务的 C 代码后，觉得可以暂放一下。所以最终接口还不需要完全敲定。前两天想到一些优化方案，也暂时不需要实现，先记录一下。
+
+关于并发读场景状态的问题：
+
+场景数据其实是允许读取方不那么严格需要一致的。因为场景数据是局部累积的一种缓慢变化。任何一个读方都不必一定读到最新的版本，而只要求读到一个完整的版本。即，我读到的场景是 0.05s 以前的状态也是可以被容忍的。0.05s 对于人类是一瞬间，但对于计算机却是一个相当长的时间段。
+
+这种延迟本身也是存在的，因为更新场景的写入者本身也一定存在于不同机器上，对于网络通讯， 50ms 已经是一个不错的相应速度了。
+
+如果在本地内存，做同步读取，任何一个需要原子性的读操作，需要的时间都远远低于 0.01s 数个数量级，这个速度差，让我们有一起契机摆脱并发操作需要的锁。
+
+简单说，我想引入一个 triple buffer ，让本地内存中，场景数据有三份几乎相同的 copy 。为了后面好描述，我把它们称为 A B C 。
+
+所有的场景更新者，通过一个消息队列提交更新需求，向 A B C 更新。每个更新请求，都需要依次更新完 A B C 后才销毁。
+
+场景服务提供者控制一个写指针，每隔 0.01s 在 A B C 间翻转。也就是说，当 0.01s 的周期一到，下一次原子写操作就写向下一个场景镜像。
+
+A B C 这三个场景镜像采用共享内存的方式，供唯一的一个写入队列以及不受限的读取者共享。写入队列维护进程在翻转写指针的同时，也翻转读指针。当写指针在 A 时，读指针在 C ；当写指针翻转到 B 时，读指针调整到 A ；等等。
+
+每次读操作可以看成是原子的，操作前先获取目前的读指针指向的镜像，然后直接在这份镜像上做完后续的读操作。因为一次读操作需要消耗的时间远远低于 0.01s ，而写指针触碰回这个镜像的时间则在 0.01s 到 0.02s 之间，不会短于 0.01s 。这样，绝对不会发生读写冲突。
+
+当然，用 double buffer 也是可行的，但需要在读取完毕后重新检查一下当前的读指针，看看是否还指向原来的镜像，如果已经切换了，就需要放弃刚才的结果，重新读一次。而且在读过程中，需要保证错误的数据（可能因为正在写入而不完整）不会引起程序崩溃。这样开发难度会增加。
+
+事后复审读指针依旧可以做，如果发生异常记入 log ，一旦发生再来考量时间窗口的大小设置是否合理，或是看看到底什么意外导致了读写冲突。
+
+对于高负载下，读操作可能被挂起，引起的原子性被破坏的问题，其实也是可测算的。
+
+首先，在读 api 中，应该避免任何 IO 操作以及系统调用，比如写 log 。一切 log 都应该在操作完毕后再统一进行。一次原子读操作中，需要保证是单纯的 CPU/内存 操作指令。这样可以保证单一 api 的过程，最多被 os 调度器打断一次。（因为指令数足够少，远小于 os 的最小时间片跑的 cpu 指令数）
+
+写操作的间隔时间足够长，如果调度器是公平的，就可以保证在同样条件下写操作的镜像翻转消耗的时间片大于两倍的单次读操作的时间片。这样，做两次翻转后，保证一次读操作至少经历了同样的两倍以上的时间片。可以认为，单次读操作不会被写操作损坏。
+http://blog.codingnow.com/2011/12/dev_note_5.html

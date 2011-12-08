@@ -50,3 +50,8 @@ http://www.ibm.com/developerworks/cn/linux/l-cn-ddsan/index.html?ca=drs-
 标准库的三种连接方式及静态库制作与使用方法
 简介： Linux 应用开发通常要考虑三个问题，即：1）在 Linux 应用程序开发过程中遇到过标准库链接在不同 Linux 版本下不兼容的问题； 2）在 Linux 静态库的制作过程中发现有别于 Windows 下静态库的制作方法；3）在 Linux 应用程序链接第三方库或者其他静态库的时候发现链接顺序的烦人问题。本文就这三个问题针对 Linux 下标准库链接和如何巧妙构建 achrive(*.a) 展开相关介绍。
 http://www.ibm.com/developerworks/cn/linux/l-cn-linklib/index.html?ca=drs-
+学习 Linux，302（混合环境）: 管理用户帐号和组
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-1/index.html?ca=drs-
+学习 Linux，302（混合环境）: 国际化
+非英语环境中的基本配置和命名概念
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-312-6/index.html?ca=drs-
