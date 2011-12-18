@@ -55,3 +55,7 @@ http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-1/index.html?ca=drs-
 学习 Linux，302（混合环境）: 国际化
 非英语环境中的基本配置和命名概念
 http://www.ibm.com/developerworks/cn/linux/l-lpic3-312-6/index.html?ca=drs-
+用 FastBack 实现 Linux 裸机恢复
+http://www.ibm.com/developerworks/cn/linux/l-cn-fastback/index.html?ca=drs-
+浅谈 NCSI 及其在 Linux 上的实现
+http://www.ibm.com/developerworks/cn/linux/l-cn-ncsi/index.html?ca=drs-
