@@ -59,3 +59,5 @@ http://www.ibm.com/developerworks/cn/linux/l-lpic3-312-6/index.html?ca=drs-
 http://www.ibm.com/developerworks/cn/linux/l-cn-fastback/index.html?ca=drs-
 浅谈 NCSI 及其在 Linux 上的实现
 http://www.ibm.com/developerworks/cn/linux/l-cn-ncsi/index.html?ca=drs-
+学习 Linux，302（混合环境）: 身份验证和授权
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-2/index.html?ca=drs-
