@@ -27,3 +27,6 @@ git status
 gitg
 
 git reset
+
+git remote -v
+git remote rm
