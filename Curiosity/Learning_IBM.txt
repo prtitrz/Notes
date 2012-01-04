@@ -61,3 +61,13 @@ http://www.ibm.com/developerworks/cn/linux/l-cn-fastback/index.html?ca=drs-
 http://www.ibm.com/developerworks/cn/linux/l-cn-ncsi/index.html?ca=drs-
 学习 Linux，302（混合环境）: 身份验证和授权
 http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-2/index.html?ca=drs-
+fanotify 监控文件系统
+inotify 的替代
+http://www.ibm.com/developerworks/cn/linux/l-cn-fanotify/index.html?ca=drs-
+Linux 进程热升级
+简介： 为了实现 Linux 系统进程热升级，本文提供了一种底层的实现方法，即在不重启进程的条件下，升级进程的共享库模块。
+http://www.ibm.com/developerworks/cn/linux/l-cn-prcss-hotupgrd/index.html?ca=drs-
+学习 Linux，302（混合环境）: Winbind
+使用 Windows 域控制器进行 Linux 帐户管理
+简介： 如果您的网络包括一个域控制器（一台 Windows 计算机或一台 Samba 服务器），那么您可以使用它的用户数据库，或者在 Linux 计算机的本地帐户数据库中维护本地登录用户。这样做要求使用一个名为 Winbind 的工具集。对于没有运行 Samba 来共享文件或打印机的 Linux 计算机来说，此工具集十分方便；具有 Windows 域帐户的用户可以从控制台登录，或者使用 SSH 访问仅限于 Linux 的功能，使用 POP 或 IMAP 邮件服务器进行 Windows 域身份验证，等等。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-3/index.html?ca=drs-
