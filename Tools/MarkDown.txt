@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-09T14:05:18+08:00
+
+====== MarkDown ======
+Created Thursday 09 February 2012
+
+Markdown是个轻量级的标记语言, 容易读, 容易写. 具体的介绍和语法可以去项目主页查看.
+
+除了直接在某些网站(例如github)上使用, 还可以通过pandoc把Markdown文件转换成HTML, MediaWiki, LaTeX, 甚至Groff, Texinfo, DocBook, OpenDocument, EPUB. 更厉害的是, pandoc还可以套用LaTeX模板和CSS样式表, 真乃神器!
+
+于是我参考这里和这里写了俩极简的简历和幻灯片模板, 调用pandoc和latex生成pdf, 相当舒服.
+http://adam8157.info/blog/2012/02/markdown-is-nice/
