@@ -592,3 +592,9 @@ string 怎么办呢？我的想法是开一个 double buffer 来保存 string �
 
 btw, 这一周剩下来的时间就是实现了。多说无益，快速实现出来最有说服力。按照惯例，应该会开源。
 http://blog.codingnow.com/2011/12/dev_note_6.html
+
+开发笔记 (9) ：近期工作小结
+http://blog.codingnow.com/2012/01/dev_note_9.html	
+
+开发笔记 (10) ：内存数据库
+http://blog.codingnow.com/2012/02/dev_note_10.html

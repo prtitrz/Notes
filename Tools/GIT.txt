@@ -30,3 +30,46 @@ git reset
 
 git remote -v
 git remote rm
+
+
+
+
+使用git制作补丁时，经常发现补丁需要修改。如果只是最后一次commit需要修改，那就好办，用下面的方法就可以搞定：
+
+$ git reset HEAD^
+# edit edit edit
+$ git commit -a -s -c ORIG_HEAD
+$ git format-patch --subject-prefix="PATCH v2"
+
+但是如果是一系列补丁中的中间几个补丁需要修改，该怎么办呢？
+
+笨办法已经被删掉>.<
+
+Update 1: 非常感谢wangcong的指点！"git rebase -i"可以出色地完成这个任务，方法在man-page里面有详述，见"INTERACTIVE MODE"和"SPLITTING COMMITS"部分。
+
+假设当前所在分支名为"topic"，做了3个补丁，打算提交给邮件列表的时候发现中间一个补丁需要更新，此时使用下列命令：
+
+git rebase -i master
+
+出现编辑窗口如下：
+
+    pick 21732a8 mm/swapping01: new testcase
+    pick c3751d1 hugemmap01: clean-up format
+    pick d75449c mm/swapping01: change sleep time to 5 sec 
+
+此时需要修改commit c3751d1，则把pick改为edit即可。保存退出后git会rebase到需要修改的commit处停止，此时可以直接修改内容，然后执行：
+
+git add xxx # mark as resolved
+git commit --amend
+
+或者
+
+git reset --soft HEAD^
+#edit edit edit
+git commit -a -s -c ORIG_HEAD
+
+之后执行"git rebase --continue"即可。
+
+突然想起来一年前就请教过wangcong这个问题，只不过当时对git rebase完全不了解，后来就忘了，惭愧-_-|||。
+
+Update 2: 同样感谢Iven的指点，可以去看看他的文章：http://www.kissuki.com/?p=135

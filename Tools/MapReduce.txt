@@ -1,0 +1,41 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-09T14:11:41+08:00
+
+====== MapReduce ======
+Created Thursday 09 February 2012
+
+http://stackoverflow.com/questions/40075/generic-list-extensions-in-c-sharp
+
+According to this link Functional Programming in C# 3.0: How Map/Reduce/Filter can Rock your World the following are the equivalent in C# under the System.Linq namespace:
+map –> Enumerable.Select
+reduce –> Enumerable.Aggregate
+filter –> Enumerable.Where
+
+http://en.wikipedia.org/wiki/MapReduce
+
+The frozen part of the MapReduce framework is a large distributed sort. The hot spots, which the application defines, are:
+an input reader
+a Map function
+a partition function
+a compare function
+a Reduce function
+an output writer
+
+Google: Cluster Computing and MapReduce
+
+http://code.google.com/edu/submissions/mapreduce-minilecture/listing.html
+
+Parallel LINQ Running Queries On Multi-Core Processors
+
+http://msdn.microsoft.com/en-us/magazine/cc163329.aspx
+
+Introduction to MapReduce for .NET Developers
+
+http://www.developerzen.com/2009/05/06/introduction-to-mapreduce-for-net-developers/
+
+open-source software for reliable, scalable, distributed computing
+
+http://hadoop.apache.org/
+
+http://www.infoq.com/cn/articles/hadoop-intro

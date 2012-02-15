@@ -61,3 +61,31 @@ http://www.ibm.com/developerworks/cn/linux/l-cn-fastback/index.html?ca=drs-
 http://www.ibm.com/developerworks/cn/linux/l-cn-ncsi/index.html?ca=drs-
 学习 Linux，302（混合环境）: 身份验证和授权
 http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-2/index.html?ca=drs-
+fanotify 监控文件系统
+inotify 的替代
+http://www.ibm.com/developerworks/cn/linux/l-cn-fanotify/index.html?ca=drs-
+Linux 进程热升级
+简介： 为了实现 Linux 系统进程热升级，本文提供了一种底层的实现方法，即在不重启进程的条件下，升级进程的共享库模块。
+http://www.ibm.com/developerworks/cn/linux/l-cn-prcss-hotupgrd/index.html?ca=drs-
+学习 Linux，302（混合环境）: Winbind
+使用 Windows 域控制器进行 Linux 帐户管理
+简介： 如果您的网络包括一个域控制器（一台 Windows 计算机或一台 Samba 服务器），那么您可以使用它的用户数据库，或者在 Linux 计算机的本地帐户数据库中维护本地登录用户。这样做要求使用一个名为 Winbind 的工具集。对于没有运行 Samba 来共享文件或打印机的 Linux 计算机来说，此工具集十分方便；具有 Windows 域帐户的用户可以从控制台登录，或者使用 SSH 访问仅限于 Linux 的功能，使用 POP 或 IMAP 邮件服务器进行 Windows 域身份验证，等等。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-313-3/index.html?ca=drs-
+学习 Linux，302（混合环境）: Samba 安全
+简介： 本文旨在帮助系统管理员准备 Linux Professional Institute Certification 考试 LPI-302，了解如何保证 Samba 安全以及排除与安全有关的故障。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-315-2/index.html?ca=drs-
+学习 Linux，302（混合环境）: Linux 文件系统和共享/服务权限
+简介： 本文旨在帮助系统管理员准备 Linux Professional Institute Certification 考试 LPI-302，了解 Samba 如何与 Linux 文件系统交互以及如何管理权限。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-315-1/index.html?ca=drs-
+Hadoop 中的调度
+简介： Hadoop 实现了可插入式调度器的为作业分配资源的功能。但是，我们从传统调度中得知，不是所有的算法都一样的，这些算法的工作效率取决于工作负载和集群。本文将了解 Hadoop 调度，并探索目前常用的两种调度算法：公平调度和容量调度。此外，还将了解如何调优这两种算法以及它们的适用场景。
+http://www.ibm.com/developerworks/cn/opensource/os-hadoop-scheduling/index.html?ca=drs-
+Linux 文件系统安全攻略
+简介： Linux 支持的文件系统种类繁多，他们为用户的数据存储和管理提供了良好的操作和使用界面。在文件系统中，存在着文件 / 目录访问权限管理和控制、加密文件系统等的安全机制和问题需要考虑，本文将详细介绍保证 Linux 文件系统安全的技术和方法。
+http://www.ibm.com/developerworks/cn/linux/l-cn-filesystem-sec/index.html?ca=drs-
+使用 sphinx 制作简洁而又美观的文档
+简介： 学习如何使用 Sphinx 工具创建能够以各种格式（如 HTML）自动进行分布的可维护的、样式支配的文档。
+http://www.ibm.com/developerworks/cn/opensource/os-sphinx-documentation/index.html?ca=drs-
+并行编程语言 Unified Parallel C
+http://www.ibm.com/developerworks/cn/linux/l-cn-upc/
+http://www.ibm.com/developerworks/cn/linux/l-cn-upcforall/index.html?ca=drs-
