@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-16T19:27:58+08:00
+
+====== Sublime2 ======
+Created Thursday 16 February 2012
+
+http://lucifr.com/139225/sublime-text-2-tricks-and-tips/
+
+http://deloz.net/1000000562.html

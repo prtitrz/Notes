@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-16T16:59:26+08:00
+
+====== GFW ======
+Created Thursday 16 February 2012
+
+http://bgp.he.net/search?search%5Bsearch%5D=twitter&commit=Search 这两个网段，nmap扫描获取未被墙IP，再用curl或openssl测试服务器443端口证书的Common Name
+端口转发不是银弹，除非无所谓在手机上的使用体验，或者VPS/独立主机有4个以上独立IP。 http://api.twitter.com http://upload.twitter.com http://mobile.twitter.com http://stream.twitter.com 都搞定没？
+目前能想到的比较好的解决方案是，自作CA，签发一个*.twitter.com的数字证书。iPhone上导入CA很方便。然后服务端可以用nginx之类做反向代理。这样只需要一个IP就可以了。还可以给数字证书加上多个subjectAltName，做其他网站的反向代理
