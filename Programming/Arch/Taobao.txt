@@ -1,0 +1,45 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-20T23:37:16+08:00
+
+====== Taobao ======
+Created Monday 20 February 2012
+
+淘宝海量数据库之一：来自业务的挑战
+http://blog.sina.com.cn/s/blog_3fc85e260100mm4u.html
+淘宝海量数据库之二：一致性选择
+http://blog.sina.com.cn/s/blog_3fc85e260100mmk2.html
+淘宝海量数据库之三：事务的ACID
+http://blog.sina.com.cn/s/blog_3fc85e260100msz3.html
+淘宝海量数据库之四：系统架构(一)
+http://blog.sina.com.cn/s/blog_3fc85e260100mwsg.html
+淘宝海量数据库之五：系统架构(二)
+http://blog.sina.com.cn/s/blog_3fc85e260100ym2l.html
+淘宝海量数据库之六-数据结构
+http://blog.sina.com.cn/s/blog_3fc85e260100n4li.html
+淘宝海量数据库之七：读写事务
+http://blog.sina.com.cn/s/blog_3fc85e260100ym2t.html
+淘宝海量数据库之八-攻克随机IO难关
+http://blog.sina.com.cn/s/blog_3fc85e260100qwv8.html
+淘宝海量数据库之九：克服单点失效(一)
+http://blog.sina.com.cn/s/blog_3fc85e260100ynl1.html
+淘宝海量数据库之十：克服单点失效(二)
+http://blog.sina.com.cn/s/blog_3fc85e260100yovj.html
+淘宝海量数据库之十一：解决单点瓶颈(一)
+http://blog.sina.com.cn/s/blog_3fc85e260100yqff.html
+淘宝海量数据库之十二：解决单点瓶颈(二)
+http://blog.sina.com.cn/s/blog_3fc85e260100ys8r.html
+淘宝海量数据库之十三：每日合并
+http://blog.sina.com.cn/s/blog_3fc85e260100yvzz.html
+淘宝海量数据库之十四：故障恢复
+http://blog.sina.com.cn/s/blog_3fc85e260100yz7d.html
+淘宝海量数据库之十五：数据校验
+http://blog.sina.com.cn/s/blog_3fc85e260100z0w3.html
+淘宝海量数据库之十六：负载平衡
+http://blog.sina.com.cn/s/blog_3fc85e260100z2b9.html
+淘宝海量数据库之十七：联表实现
+http://blog.sina.com.cn/s/blog_3fc85e260100z6hn.html
+
+http://code.taobao.org/p/OceanBase/src/
+ref:数据库如何抵抗随机IO：问题、方法与现实  
+http://wangyuanzju.blog.163.com/blog/static/13029201132154010987/

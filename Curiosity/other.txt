@@ -1,0 +1,61 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-20T22:46:21+08:00
+
+====== other ======
+Created Monday 20 February 2012
+
+http://coolthingoftheday.blogspot.com/2012/02/it-decompiler-day-justdecompile-rtw-and.html JustDecompile和ILSpy是两个知名的DotNet反编译器，另外还有JetBrain出品的DotPeek。推荐ILSpy。
+
+http://www.slideshare.net/gsporar/peer-code-review-an-agile-process-2502327 如何做同事代码评审，其实不是几句话就能说清楚地。推荐大家从自己实践出发，总结出实用有效的评审过程。
+
+http://lua-users.org/lists/lua-l/2012-02/msg00639.html Lua5.1.5发布了，不过很长一段时间里，估计Lua5.1.4和LuaJit2应该是主流，而不是Lua5.2，这在其他语言的新版本发布中也很常见。
+
+http://www.erlang-factory.com/upload/presentations/223/ErlangfactorySFBay2010-ChadDePue.pdf Erlang和Lua，基本上Lua作为一个内置脚本引擎非常好用，所以Redis也选择Lua来加入脚本支持。不过就使用范围而言Lua+Java前景更广阔。
+
+http://timyang.net/lua/lua-coroutine-vs-java-wait-notify/ 一篇老文，Lua协程与Java。
+
+http://blog.curiasolutions.com/the-great-web-framework-shootout/ 流行的WebFramework评测，感兴趣的可以看看。
+
+http://herbsutter.com/2012/02/08/going-native-sessions-online/ GoNative2012视频链接，谁说C++死了来着？？
+http://sunxiunan.com/?p=1985
+
+
+
+一. python通过图片内容判断图片类型
+二. stringstream使用陷阱（1）
+三. stringstream使用陷阱（2）
+四. MySQL多库表的查询方法
+五. MySQL安全删除数据的做法
+http://www.vimer.cn/2012/01/%E6%9C%80%E8%BF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E6%9C%AF%E6%95%B4%E7%90%8620120109.html
+
+最近在readitlaterlist上收集的技术文章链接，在这里把精华部分总结一下。
+
+https://gist.github.com/1834789 Microlight – a very compact Lua utilities module，这里面有不少有用的功能，另外可以使用penlight
+
+http://blog.benjamin-cabe.com/2012/02/10/lua-development-tools-now-available-as-a-standalone-product koneki是基于eclipse的一个Lua IDE
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=542074 Analyze implementation of closures in Lua and LuaJIT 一个简要分析Lua实现闭包机制的短文
+
+http://oredev.org/2010/videos 这里面的视频还是蛮有价值的，推荐挂上vpn然后学习之
+
+http://googleappengine.blogspot.com/2012/02/bugsense-hybrid-app-experiences-using.html 在google appengine上使用clojure
+
+http://chill.com/scott/collection/the-ultimate-steve-jobs-collection 乔布斯的视频大合集
+
+http://www.bobtacoindustries.com/Content/Devs/CsToCpp-ASomewhatShortGuide.pdf C#开发者如何快捷学习C++
+
+http://docs.oracle.com/javase/specs/index.html The Java Language Specification, Java SE 7 Edition，The Java Virtual Machine Specification, Java SE 7 Edition
+
+http://itunes.apple.com/in/itunes-u/multicore-programming-primer/id341597759 Multicore Programming Primer
+
+http://leafo.net/posts/lua_on_heroku.html –> http://github.com/leafo/heroku-buildpack-lua.git
+
+http://moonscript.org/ 0.2.0版本出来了，这就是Lua版本的coffeescript，代码不是很好懂啊
+
+http://www.cubrid.org/blog/dev-platform/understanding-jvm-internals/ understanding JVM internals
+
+http://www.mediawiki.org/wiki/User:Sumanah/Lua_vs_Javascript 这是Lua开发最近一个大新闻，维基百科使用Lua作为模板语言
+
+http://pytools.codeplex.com/ python tools for visualstudio v1.1发布了，这个免费工具把VS2010变成Python的IDE。另外支持Pyvot这个Python使用Excel的库。http://pytools.codeplex.com/wikipage?title=Pyvot
+http://sunxiunan.com/?p=1980	

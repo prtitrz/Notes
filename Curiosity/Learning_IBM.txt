@@ -89,3 +89,14 @@ http://www.ibm.com/developerworks/cn/opensource/os-sphinx-documentation/index.ht
 并行编程语言 Unified Parallel C
 http://www.ibm.com/developerworks/cn/linux/l-cn-upc/
 http://www.ibm.com/developerworks/cn/linux/l-cn-upcforall/index.html?ca=drs-
+学习 Linux, 302（混合环境）: NetBIOS 和 WINS
+配置 Samba 为名称提供服务并管理浏览
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-314-2/index.html?ca=drs-
+使用 Python 为 KVM 编写脚本，第 1 部分: libvirt
+http://www.ibm.com/developerworks/cn/opensource/os-python-kvm-scripting1/index.html?ca=drs-
+学习 Linux, 302（混合环境）: NetBIOS 和 WINS
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-314-2/index.html?ca=drs-
+iptables 的防火墙正常运行时间和安全性
+http://www.ibm.com/developerworks/cn/opensource/os-iptables/index.html?ca=drs-
+学习 Linux, 302 （混合环境）: CIFS 集成
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-314-1/index.html?ca=drs-

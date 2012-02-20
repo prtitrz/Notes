@@ -1,0 +1,55 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2012-02-20T23:35:03+08:00
+
+====== audacity ======
+Created Monday 20 February 2012
+
+曾经写过一篇利用 pulseaudio，实现 audacity 内录音频的文章。但是事隔久远，pulseaudio 也经历了多次升级，所以当初的方法可能已经不适用了。经过摸索又找到了新的方法，实现内录。在此介绍给大家。
+内录能干嘛？
+
+使用 audacity 录制正在播放的音频，可以抓取流文件，也可以在不转码前提下编辑声轨，还可用来鉴别无损真伪等。正所谓好处颇多。
+安装必要的软件
+
+audacity 作为专业的音频编辑工具，功能相当强大，内录功能当然也是手到擒来，所以 audacity 无须修改源码等，仅仅需要修改相关配置即可。但是因为 linux 音频系统的复杂程度，使简单的问题变得复杂化了。
+
+首先您需要安装 完整的 pulseaudio 组件 和相应的 alsa 包才可以。
+1
+2
+3
+4
+5
+	
+delectate@delectate ~$ pacman  -Q | grep pulse
+libflashsupport-pulse 20110505-1
+libpulse 1.1-2
+pulseaudio 1.1-2
+pulseaudio-alsa 2-1
+
+上表列的是 pulseaudio 所必需的工具。接下来您需要确定 alsa 也安装、并配置好：
+	
+delectate@delectate ~$ pacman  -Q | grep alsa
+alsa-lib 1.0.25-1
+alsa-plugins 1.0.25-1
+alsa-utils 1.0.25-1
+pulseaudio-alsa 2-1
+
+同时您需要安装 pavucontrol 实现对 pulseaudio 的调节：
+	
+delectate@delectate ~$ sudo pacman -S pavucontrol
+  #     上边所列的软件，如果您有的没有安装，也可以使用这个命令安装：
+sudo pacman -S {pkgName}
+
+现在您的音频系统应该已经正常工作了。如果它仍旧异常（如未识别声卡、无法出声等），请重新配置 alsa。
+配置 Audacity
+
+打开 audacity，然后点击菜单 edit–preferences，Devices 中的 Recording 项目，device 选择 pulse：
+
+    或者也可以直接在面板上选择设备哦。
+
+然后运行 pavucontrol，同样是 Recording 选项卡。
+
+木有设备在录音的时候，这个选项卡是没有任何项目的。所以现在点击 audacity 的红色 record 按钮，让 audacity 处于录制状态，然后再调节 pavucontrol 的 Recording 选项，把 Internal Audio Analog Stereo 改为 Monitor for Internal Audio Stereo：
+
+现在 audacity 可以实现内录啦！（如果需要改回使用 mic 录音，把 pavucontrol 改为 Internal Audio Analog Stereo 即可）
+https://www.deleak.com/blog/2012/02/18/audacity-linear-record/
