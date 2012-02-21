@@ -7,3 +7,5 @@ Created Monday 28 November 2011
 
 一个最小x86 ELF Hello World程序的诞生
 http://heikezhi.com/2011/10/19/smallest-x86-elf-hello-world/
+为什么你应该学点Awk（附指南及示范）
+http://heikezhi.com/2011/08/31/why-you-should-know-just-little-awk/
