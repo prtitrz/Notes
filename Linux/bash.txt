@@ -12,3 +12,20 @@ http://forum.ubuntu.org.cn/viewtopic.php%3Ff%3D35%26t%3D42400
 rename 's/new file/a/' *
 rename 'y/a-z/A-Z/' *
 g为重复匹配
+
+Bash For Loop Examples
+http://www.cyberciti.biz/faq/bash-for-loop/
+
+#!/bin/bash
+for i in 1 2 3 4 5
+do
+   echo "Welcome $i times"
+done
+
+Sometimes you may need to set a step value (allowing one to count by two's or to count backwards for instance). Latest bash version 3.0+ has inbuilt support for setting up ranges:
+#!/bin/bash
+echo "Bash version ${BASH_VERSION}..."
+for i in {0..10..2}
+  do
+     echo "Welcome $i times"
+ done

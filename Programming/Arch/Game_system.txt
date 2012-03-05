@@ -598,3 +598,6 @@ http://blog.codingnow.com/2012/01/dev_note_9.html
 
 开发笔记 (10) ：内存数据库
 http://blog.codingnow.com/2012/02/dev_note_10.html
+
+开发笔记(12) : 位置同步策略
+http://blog.codingnow.com/2012/03/dev_note_12.html

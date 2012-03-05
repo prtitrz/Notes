@@ -100,3 +100,9 @@ iptables 的防火墙正常运行时间和安全性
 http://www.ibm.com/developerworks/cn/opensource/os-iptables/index.html?ca=drs-
 学习 Linux, 302 （混合环境）: CIFS 集成
 http://www.ibm.com/developerworks/cn/linux/l-lpic3-314-1/index.html?ca=drs-
+学习 Linux，302（混合环境）: 性能调优
+简介： 本文旨在帮助系统管理员准备 Linux Professional Institute Certification 考试 LPI-302，学习如何测量 Samba 性能以及如何让 Samba 运行得更快。
+http://www.ibm.com/developerworks/cn/linux/l-lpic3-315-3/index.html?ca=drs-
+使用 monitor command 监控 QEMU 运行状态
+ 由于 KVM 借助于 CPU 的硬件辅助虚拟化技术，导致虚拟化的效率有了大幅度的提升，越来越多的用户将虚拟化方面的工作转向 QEMU/KVM。QEMU monitor 提供了和虚拟机之间进行交互的用户界面，在使用 QEMU 进行开发和测试工作的时候，一定不能忽略 QEMU monitor 的作用。本文将对 QEMU monitor 的命令做一个概括性的介绍。
+http://www.ibm.com/developerworks/cn/linux/l-cn-qemu-monitor/index.html?ca=drs-
