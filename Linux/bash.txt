@@ -29,3 +29,7 @@ for i in {0..10..2}
   do
      echo "Welcome $i times"
  done
+
+
+写出健壮的Bash脚本
+http://article.yeeyan.org/view/58906/257928

@@ -110,3 +110,13 @@ http://www.ibm.com/developerworks/cn/linux/l-cn-qemu-monitor/index.html?ca=drs-
 http://www.ibm.com/developerworks/cn/linux/l-cn-apei/index.html?ca=drs- 
 面向 Windows 系统管理员的 Linux，第 1 部分: 管理和监视扩展文件系统
 http://www.ibm.com/developerworks/cn/linux/l-filesystem-management/index.html?ca=drs-
+使用 Python 编写 KVM 脚本，第 2 部分: 添加 GUI 来使用 libvirt 和 Python 管理 KVM
+http://www.ibm.com/developerworks/cn/opensource/os-python-kvm-scripting2/index.html?ca=drs-
+利用 Spark 进行数据分析和性能改进
+http://www.ibm.com/developerworks/cn/linux/l-sparkdataanalysis/index.html?ca=drs-
+Linux 平台相关代码的 C++ 解决方案
+http://www.ibm.com/developerworks/cn/linux/l-cn-cppoverlinux/index.html?ca=drs-
+将 Linux OS 导入 SmartCloud Enterprise
+http://www.ibm.com/developerworks/cn/cloud/library/cl-importlinuxOSimage/index.html?ca=drs-
+修复云虚拟机克隆错误
+http://www.ibm.com/developerworks/cn/cloud/library/cl-vmclonerrors/index.html?ca=drs-

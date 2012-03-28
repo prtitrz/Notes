@@ -9,3 +9,9 @@ Created Monday 28 November 2011
 http://heikezhi.com/2011/10/19/smallest-x86-elf-hello-world/
 为什么你应该学点Awk（附指南及示范）
 http://heikezhi.com/2011/08/31/why-you-should-know-just-little-awk/
+in-memory-key-value-store-in-c-go-and-python/
+http://www.darkcoding.net/software/in-memory-key-value-store-in-c-go-and-python/
+It's not enough to bash in heads, you've got to bash in minds...with ZSH
+http://intridea.com/blog/2011/5/18/its-not-enough-to-bash-in-heads-youve-got-to-bash-in-minds-with-zsh
+使用python抓取网页(以人人网新鲜事和团购网信息为例)
+http://pinkyjie.com/2010/12/19/fetch-webpage-by-python/
